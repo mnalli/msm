@@ -1,3 +1,12 @@
+set __msm_help = 'Usage: msm subcommand [string]
+
+    msm help                   Show this message
+    msm save "<snippet>"       Save snippet
+    msm validate               Validate snippet store structure
+    msm validate "<snippet>"   Validate snippet
+    msm search                 Interactively search for snippets
+    msm format                 Format snippet store
+'
 
 function msm -d "Minimal Snippet Manager CLI" -a subcommand -a snippet
 
@@ -15,7 +24,7 @@ function msm -d "Minimal Snippet Manager CLI" -a subcommand -a snippet
         case format
             __msm_format
         case help
-            echo "Help:"
+            echo $__msm_help
         case '*'
             echo "Error: invalid subcommand $subcommand" >&2
     end
