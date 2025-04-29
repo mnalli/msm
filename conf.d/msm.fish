@@ -153,7 +153,7 @@ function __msm_transform_store
         # if empty, print line anyway
         echo $description
 
-        printf "%s\t\t\t\0" $definition
+        printf "%s\t\0" $definition
     end
 
 end
