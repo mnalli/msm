@@ -95,6 +95,8 @@ function __msm_save -a snippet
         return 1
     end
 
+    set snippet (echo $snippet | fish_indent | string collect)
+
     # write in snippet store, adding newline at the end
     echo -e "$snippet\n" >> $msm_path
 end
