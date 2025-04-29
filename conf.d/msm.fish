@@ -159,8 +159,15 @@ function __msm_transform_store
 end
 
 function __msm_format
-    fish_indent --write $msm_path
-    echo >> $msm_path
+    set -l formatted (
+        # indent and join blank lines
+        fish_indent $msm_path | awk '
+            NF { print; blank=0 }
+            !NF && !blank { print; blank=1 }
+        '
+    )
+
+    printf "%s\n" $formatted > $msm_path
 end
 
 function __msm_capture
