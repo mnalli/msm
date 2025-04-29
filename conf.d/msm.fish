@@ -123,8 +123,10 @@ function __msm_search
             --preview-window="bottom:5:wrap"
     )
 
-    # remove descriptionline and trailing whitespaces (during expansion)
-    commandline --replace $snippet[2..-1]
+    # remove description line and trailing whitespaces
+    set -l output (echo $snippet[2..-1] | string collect | string trim)
+
+    commandline --replace $output
 end
 
 function __msm_get_description -a snippet
