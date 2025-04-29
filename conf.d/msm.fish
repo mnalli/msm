@@ -105,14 +105,16 @@ end
 function __msm_search
     set -l snippet (
         __msm_transform_store | fzf --read0 \
-            --print0 \
-            --tabstop 2 \
             --prompt="Snippets> " \
             --query=(commandline) \
+            --delimiter="\n" \
+            --with-nth=2..,1 \
             --preview="echo {} | fish_indent --ansi" \
-            --preview-window="bottom:3:wrap"
+            --preview-window="bottom:5:wrap"
     )
-    commandline --replace $snippet
+
+    # remove descriptionline and trailing whitespaces (during expansion)
+    commandline --replace $snippet[2..-1]
 end
 
 function __msm_get_description -a snippet
@@ -144,7 +146,10 @@ function __msm_transform_store
         set -l description (__msm_get_description $snippet)
         set -l definition (__msm_get_definition $snippet | string collect)
 
-        printf "%s %s\0" $definition $description
+        # if empty, print line anyway
+        echo $description
+
+        printf "%s\t\t\t\0" $definition
     end
 
 end
