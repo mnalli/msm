@@ -12,6 +12,8 @@ function msm -d "Minimal Snippet Manager CLI" -a subcommand -a snippet
             end
         case search
             __msm_search
+        case format
+            __msm_format
         case help
             echo "Help:"
         case '*'
@@ -154,6 +156,11 @@ function __msm_transform_store
         printf "%s\t\t\t\0" $definition
     end
 
+end
+
+function __msm_format
+    fish_indent --write $msm_path
+    echo >> $msm_path
 end
 
 function __msm_capture
