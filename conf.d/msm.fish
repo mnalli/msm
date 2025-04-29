@@ -103,9 +103,6 @@ function __msm_save -a snippet
     echo -e "$snippet\n" >> $msm_path
 end
 
-# TODO: set default filtering command
-# set -g msm_fuzzy_filter ''
-
 function __msm_search
     set -l snippet (
         __msm_transform_store | fzf --read0 \
@@ -164,10 +161,18 @@ function __msm_format
         fish_indent $msm_path | awk '
             NF { print; blank=0 }
             !NF && !blank { print; blank=1 }
-        '
+        ' | string collect
     )
 
-    printf "%s\n" $formatted > $msm_path
+    # checks for safe overwrite
+    for s in $pipestatus
+        if not test $s -eq 0
+            return $s
+        end
+    end
+
+    printf "%s\n\n" $formatted > $msm_path
+
 end
 
 function __msm_capture
