@@ -15,6 +15,12 @@ fisher install mnalli/msm
 
 Alternatively, you can simply copy `conf.d/msm.d` under your `conf.d` directory.
 
+## Dependencies
+- `printf`
+- `sed`
+- `awk`
+- `fzf`
+
 ## Usage
 
 Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
