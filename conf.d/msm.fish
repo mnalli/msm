@@ -188,5 +188,5 @@ function __msm_capture
     __msm_validate_snippet_store
 end
 
-bind \ca __msm_capture
-bind \cs __msm_search
+bind \ea __msm_capture
+bind \ez __msm_search
