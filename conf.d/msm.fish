@@ -1,4 +1,4 @@
-set __msm_help = 'Usage: msm subcommand [string]
+set __msm_help 'Usage: msm subcommand [string]
 
     msm help                   Show this message
     msm save "<snippet>"       Save snippet
