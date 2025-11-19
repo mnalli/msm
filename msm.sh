@@ -89,7 +89,7 @@ __msm_split_snippet_store() {
 }
 
 __msm_validate_snippet_store() {
-    __msm_split_snippet_store | xargs --null -n1 sh -c '. msm.sh && __msm_validate_snippet "$1"' $0
+    __msm_split_snippet_store | xargs --null -n1 sh -c ". '$msm_dir/msm.sh' && __msm_validate_snippet \"\$1\"" $0
 }
 
 __msm_save() {
@@ -153,7 +153,7 @@ __msm_transform_snippet() {
 }
 
 __msm_transform_store() {
-    __msm_split_snippet_store | xargs --null -n1 sh -c '. msm.sh && __msm_transform_snippet "$1"' $0
+    __msm_split_snippet_store | xargs --null -n1 sh -c ". '$msm_dir/msm.sh' && __msm_transform_snippet \"\$1\"" $0
 }
 
 __msm_capture() {
