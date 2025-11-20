@@ -53,13 +53,12 @@ __msm_validate_snippet() {
 __msm_validate_snippet_structure() {
     __msm_validate_snippet_structure_snippet="$1"
 
-    # matched description?
-    if echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
-        # remove description
-        __msm_validate_snippet_structure_snippet="$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
+    if ! echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
+        echo "Error: missing snippet description" >&2
+        return 1
     fi
 
-    __msm_validate_definition_structure "$__msm_validate_snippet_structure_snippet"
+    __msm_validate_definition_structure "$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
 }
 
 __msm_validate_definition_structure() {
@@ -92,6 +91,11 @@ __msm_validate_snippet_store() {
 __msm_save() {
     __msm_save_snippet="$1"
 
+    if ! echo "$__msm_save_snippet" | sed -n 1p | grep --quiet '^#'; then
+        __msm_save_snippet="#
+$__msm_save_snippet"
+    fi
+
     if ! __msm_validate_snippet "$__msm_save_snippet"; then
         return 1
     fi
@@ -105,7 +109,7 @@ __msm_save() {
 __msm_search() {
     query="$1"
 
-    __msm_transform_store |
+    __msm_split_snippet_store |
     fzf --read0 \
         --tac \
         --prompt="Snippets> " \
@@ -130,22 +134,6 @@ __msm_get_definition() {
     fi
 
     echo "$__msm_get_definition_snippet"
-}
-
-__msm_transform_snippet() {
-    __msm_transform_snippet_snippet="$1"
-
-    description="$(__msm_get_description "$__msm_transform_snippet_snippet")"
-    definition="$(__msm_get_definition "$__msm_transform_snippet_snippet")"
-
-    # if empty, print line anyway
-    echo "$description"
-
-    printf "%s\t\0" "$definition"
-}
-
-__msm_transform_store() {
-    __msm_split_snippet_store | xargs --null -n1 sh -c ". '$msm_dir/msm.sh' && __msm_transform_snippet \"\$1\"" $0
 }
 
 __msm_capture() {
