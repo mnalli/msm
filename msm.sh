@@ -114,9 +114,6 @@ __msm_capture() {
 
     READLINE_LINE=""
     READLINE_POINT=${#READLINE_LINE}
-
-    # validate full snippet store
-    __msm_validate_snippet_store
 }
 
 __msm_search_interactive() {
