@@ -107,6 +107,7 @@ __msm_search() {
 
     __msm_transform_store |
     fzf --read0 \
+        --tac \
         --prompt="Snippets> " \
         --query="$query" \
         --delimiter="\n" \
