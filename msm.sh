@@ -82,7 +82,7 @@ __msm_validate_definition_structure() {
 
 __msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' $msm_path | sed -z 's/^\n//' | sed -z 's/\n$//'
+    sed 's/^$/\x0/' $msm_path | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 __msm_validate_snippet_store() {
