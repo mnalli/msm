@@ -28,7 +28,7 @@ msm() {
             fi
             ;;
         search)
-            __msm_search
+            __msm_search "$msm_snippet"
             ;;
         help)
             echo "$__msm_help"
@@ -103,21 +103,17 @@ __msm_save() {
 [ -z "$msm_preview" ] && msm_preview='cat'
 
 __msm_search() {
-    __msm_search_snippet="$(
-        __msm_transform_store | fzf --read0 \
-            --prompt="Snippets> " \
-            --query="$READLINE_LINE" \
-            --delimiter="\n" \
-            --with-nth=2..,1 \
-            --preview="echo {} | $msm_preview" \
-            --preview-window="bottom:5:wrap"
-    )"
+    query="$1"
 
-    # remove description line (and trailing whitespaces ???)
-    __msm_search_output="$(echo "$__msm_search_snippet" | sed -n '2,$ p')"
-
-    READLINE_LINE="$__msm_search_output"
-    READLINE_POINT=${#READLINE_LINE}
+    __msm_transform_store |
+    fzf --read0 \
+        --prompt="Snippets> " \
+        --query="$query" \
+        --delimiter="\n" \
+        --with-nth=2..,1 \
+        --preview="echo {} | $msm_preview" \
+        --preview-window="bottom:5:wrap" |
+    sed -n '2,$ p'    # remove description line
 }
 
 __msm_get_description() {
@@ -161,4 +157,15 @@ __msm_capture() {
 
     # validate full snippet store
     __msm_validate_snippet_store
+}
+
+__msm_search_interactive() {
+
+    __msm_search_interactive_output=$(__msm_search "$READLINE_LINE")
+
+    if [ "$__msm_search_interactive_output" ]; then
+        READLINE_LINE="$__msm_search_interactive_output"
+        READLINE_POINT=${#READLINE_LINE}
+    fi
+
 }
