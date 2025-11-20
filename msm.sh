@@ -13,18 +13,18 @@ __msm_help='Usage: msm subcommand [string]
     msm search                 Interactively search for snippets'
 
 msm() {
-    subcommand="$1"
-    snippet="$2"
+    msm_subcommand="$1"
+    msm_snippet="$2"
 
-    case "$subcommand" in
+    case "$msm_subcommand" in
         save)
-            __msm_save "$snippet"
+            __msm_save "$msm_snippet"
             ;;
         validate)
-            if [ -z "$snippet" ]; then
+            if [ -z "$msm_snippet" ]; then
                 __msm_validate_snippet_store
             else
-                __msm_validate_snippet "$snippet"
+                __msm_validate_snippet "$msm_snippet"
             fi
             ;;
         search)
@@ -34,7 +34,7 @@ msm() {
             echo "$__msm_help"
             ;;
         *)
-            echo "Error: invalid subcommand $subcommand" >&2
+            echo "Error: invalid subcommand $msm_subcommand" >&2
             ;;
     esac
 }
@@ -42,45 +42,42 @@ msm() {
 [ -z "$msm_path" ] && msm_path=~/snippets.sh
 
 __msm_validate_snippet() {
-    snippet="$1"
+    __msm_validate_snippet_snippet="$1"
 
-    if ! __msm_validate_snippet_structure "$snippet"; then
-        echo "Error: '$snippet'" >&2
+    if ! __msm_validate_snippet_structure "$__msm_validate_snippet_snippet"; then
+        echo "Error: '$__msm_validate_snippet_snippet'" >&2
         return 1
     fi
 }
 
 __msm_validate_snippet_structure() {
-    snippet="$1"
+    __msm_validate_snippet_structure_snippet="$1"
 
     # matched description?
-    if echo "$snippet" | sed -n 1p | grep --quiet "^#"; then
+    if echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
         # remove description
-        snippet="$(echo "$snippet" | sed -n '2,$ p')"
+        __msm_validate_snippet_structure_snippet="$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
     fi
 
-    __msm_validate_definition_structure "$snippet"
+    __msm_validate_definition_structure "$__msm_validate_snippet_structure_snippet"
 }
 
 __msm_validate_definition_structure() {
-    snippet=$1
-
-    if [ -z "$snippet" ]; then
+    if [ -z "$1" ]; then
         echo "Error: missing snippet definition" >&2
         return 1
     fi
 
     # match description
-    if echo "$snippet" | grep "^#" >&2; then
+    if echo "$1" | grep "^#" >&2; then
         echo "Error: cannot have comments in definition (description can be one-line only)" >&2
         return 1
     fi
 
-    if echo "$snippet" | grep -n -E '^[ \t]*$' >&2; then
+    if echo "$1" | grep -n -E '^[ \t]*$' >&2; then
         echo "Error: cannot have empty or white lines in definition" >&2
         return 1
     fi
-
 }
 
 __msm_split_snippet_store() {
@@ -93,20 +90,20 @@ __msm_validate_snippet_store() {
 }
 
 __msm_save() {
-    snippet="$1"
+    __msm_save_snippet="$1"
 
-    if ! __msm_validate_snippet "$snippet"; then
+    if ! __msm_validate_snippet "$__msm_save_snippet"; then
         return 1
     fi
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$snippet" >> $msm_path
+    printf "%s\n\n" "$__msm_save_snippet" >> $msm_path
 }
 
 [ -z "$msm_preview" ] && msm_preview='cat'
 
 __msm_search() {
-    snippet="$(
+    __msm_search_snippet="$(
         __msm_transform_store | fzf --read0 \
             --prompt="Snippets> " \
             --query="$READLINE_LINE" \
@@ -117,34 +114,32 @@ __msm_search() {
     )"
 
     # remove description line (and trailing whitespaces ???)
-    output="$(echo "$snippet" | sed -n '2,$ p')"
+    __msm_search_output="$(echo "$__msm_search_snippet" | sed -n '2,$ p')"
 
-    READLINE_LINE="$output"
+    READLINE_LINE="$__msm_search_output"
     READLINE_POINT=${#READLINE_LINE}
 }
 
 __msm_get_description() {
-    snippet="$1"
-
     # output nothing if it does not exist
-    echo "$snippet" | sed -n 1p | grep "^#"
+    echo "$1" | sed -n 1p | grep "^#"
 }
 
 __msm_get_definition() {
-    snippet="$1"
+    __msm_get_definition_snippet="$1"
 
-    if __msm_get_description "$snippet" >/dev/null; then
-        snippet="$(echo "$snippet" | sed -n '2,$ p')"
+    if __msm_get_description "$__msm_get_definition_snippet" >/dev/null; then
+        __msm_get_definition_snippet="$(echo "$__msm_get_definition_snippet" | sed -n '2,$ p')"
     fi
 
-    echo "$snippet"
+    echo "$__msm_get_definition_snippet"
 }
 
 __msm_transform_snippet() {
-    snippet="$1"
+    __msm_transform_snippet_snippet="$1"
 
-    description="$(__msm_get_description "$snippet")"
-    definition="$(__msm_get_definition "$snippet")"
+    description="$(__msm_get_description "$__msm_transform_snippet_snippet")"
+    definition="$(__msm_get_definition "$__msm_transform_snippet_snippet")"
 
     # if empty, print line anyway
     echo "$description"
@@ -157,9 +152,7 @@ __msm_transform_store() {
 }
 
 __msm_capture() {
-    snippet="$READLINE_LINE"
-
-    if ! __msm_save "$snippet"; then
+    if ! __msm_save "$READLINE_LINE"; then
         return 1
     fi
 
