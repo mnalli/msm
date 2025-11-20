@@ -53,13 +53,12 @@ __msm_validate_snippet() {
 __msm_validate_snippet_structure() {
     __msm_validate_snippet_structure_snippet="$1"
 
-    # matched description?
-    if echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
-        # remove description
-        __msm_validate_snippet_structure_snippet="$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
+    if ! echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
+        echo "Error: missing snippet description" >&2
+        return 1
     fi
 
-    __msm_validate_definition_structure "$__msm_validate_snippet_structure_snippet"
+    __msm_validate_definition_structure "$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
 }
 
 __msm_validate_definition_structure() {
