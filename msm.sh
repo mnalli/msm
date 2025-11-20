@@ -111,7 +111,7 @@ __msm_search() {
         --prompt="Snippets> " \
         --query="$query" \
         --delimiter="\n" \
-        --with-nth=2..,1 \
+        --with-nth=2.. \
         --preview="echo {} | $msm_preview" \
         --preview-window="bottom:5:wrap" |
     sed -n '2,$ p'    # remove description line
