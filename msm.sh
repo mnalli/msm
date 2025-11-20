@@ -156,7 +156,8 @@ __msm_capture() {
         return 1
     fi
 
-    echo "Appended to $msm_path."
+    READLINE_LINE=""
+    READLINE_POINT=${#READLINE_LINE}
 
     # validate full snippet store
     __msm_validate_snippet_store
