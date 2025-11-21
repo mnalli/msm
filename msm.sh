@@ -42,38 +42,24 @@ msm() {
 [ -z "$msm_path" ] && msm_path=~/snippets.sh
 
 __msm_validate_snippet() {
-    __msm_validate_snippet_snippet="$1"
+    __msm_validate_snippet_description="$(echo "$1" | sed -n 1p)"
+    __msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
 
-    if ! __msm_validate_snippet_structure "$__msm_validate_snippet_snippet"; then
-        echo "Error: '$__msm_validate_snippet_snippet'" >&2
-        return 1
-    fi
-}
-
-__msm_validate_snippet_structure() {
-    __msm_validate_snippet_structure_snippet="$1"
-
-    if ! echo "$__msm_validate_snippet_structure_snippet" | sed -n 1p | grep --quiet "^#"; then
+    if ! echo "$__msm_validate_snippet_description" | grep --quiet "^#"; then
+        echo "Error: '$1'" >&2
         echo "Error: missing snippet description" >&2
         return 1
     fi
 
-    __msm_validate_definition_structure "$(echo "$__msm_validate_snippet_structure_snippet" | sed -n '2,$ p')"
-}
-
-__msm_validate_definition_structure() {
-    if [ -z "$1" ]; then
-        echo "Error: missing snippet definition" >&2
-        return 1
-    fi
-
     # match description
-    if echo "$1" | grep "^#" >&2; then
+    if echo "$__msm_validate_snippet_definition" | grep "^#" >&2; then
+        echo "Error: '$1'" >&2
         echo "Error: cannot have comments in definition (description can be one-line only)" >&2
         return 1
     fi
 
-    if echo "$1" | grep -n -E '^[ \t]*$' >&2; then
+    if echo "$__msm_validate_snippet_definition" | grep -n -E '^[ \t]*$' >&2; then
+        echo "Error: '$1'" >&2
         echo "Error: cannot have empty or white lines in definition" >&2
         return 1
     fi
@@ -119,21 +105,6 @@ __msm_search() {
         --preview="echo {} | $msm_preview" \
         --preview-window="bottom:5:wrap" |
     sed -n '2,$ p'    # remove description line
-}
-
-__msm_get_description() {
-    # output nothing if it does not exist
-    echo "$1" | sed -n 1p | grep "^#"
-}
-
-__msm_get_definition() {
-    __msm_get_definition_snippet="$1"
-
-    if __msm_get_description "$__msm_get_definition_snippet" >/dev/null; then
-        __msm_get_definition_snippet="$(echo "$__msm_get_definition_snippet" | sed -n '2,$ p')"
-    fi
-
-    echo "$__msm_get_definition_snippet"
 }
 
 __msm_capture() {
