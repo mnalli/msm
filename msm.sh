@@ -2,7 +2,7 @@
 
 # Implemented as a POSIX-compliant script
 # Should work on sh, dash, bash, ksh, zsh
-# To use source this file from your bash profile
+# Source this file to use it
 
 __msm_help='Usage: msm subcommand [string]
 
