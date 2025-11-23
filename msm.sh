@@ -4,6 +4,11 @@
 # Should work on sh, dash, bash, ksh, zsh
 # Source this file to use it
 
+# Define these variables to change msm behavior
+[ -z "$msm_dir" ]     && msm_dir=~/.msm
+[ -z "$msm_path" ]    && msm_path=~/snippets.sh
+[ -z "$msm_preview" ] && msm_preview='cat'
+
 __msm_help='Usage: msm subcommand [string]
 
     msm help                   Show this message
@@ -38,8 +43,6 @@ msm() {
             ;;
     esac
 }
-
-[ -z "$msm_path" ] && msm_path=~/snippets.sh
 
 __msm_validate_snippet() {
     __msm_validate_snippet_description="$(echo "$1" | sed -n 1p)"
@@ -89,8 +92,6 @@ $__msm_save_snippet"
     # write in snippet store, adding space at the end
     printf "%s\n\n" "$__msm_save_snippet" >> "$msm_path"
 }
-
-[ -z "$msm_preview" ] && msm_preview='cat'
 
 __msm_search() {
     query="$1"
