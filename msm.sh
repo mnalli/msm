@@ -40,7 +40,7 @@ msm() {
             echo "$__msm_help"
             ;;
         *)
-            echo "Error: invalid subcommand '$msm_subcommand'" >&2
+            echo "Invalid subcommand '$msm_subcommand'" >&2
             msm help
             ;;
     esac
@@ -51,21 +51,21 @@ __msm_validate_snippet() {
     __msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
 
     if ! echo "$__msm_validate_snippet_description" | grep --quiet "^#"; then
-        echo "Error: '$1'" >&2
-        echo "Error: missing snippet description" >&2
+        echo "Missing snippet description" >&2
+        echo "$1" >&2
         return 1
     fi
 
     # match description
-    if echo "$__msm_validate_snippet_definition" | grep "^#" >&2; then
-        echo "Error: '$1'" >&2
-        echo "Error: cannot have comments in definition (description can be one-line only)" >&2
+    if echo "$__msm_validate_snippet_definition" | grep -n "^#" >&2; then
+        echo "Cannot have comments in definition (description can be one-line only)" >&2
+        echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 
     if echo "$__msm_validate_snippet_definition" | grep -n -E '^[ \t]*$' >&2; then
-        echo "Error: '$1'" >&2
-        echo "Error: cannot have empty or white lines in definition" >&2
+        echo "Cannot have empty (or white) lines in definition" >&2
+        echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 }
