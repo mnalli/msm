@@ -67,7 +67,7 @@ __msm_validate_snippet() {
 
 __msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' $msm_path | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    sed 's/^$/\x0/' "$msm_path" | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 __msm_validate_snippet_store() {
@@ -87,7 +87,7 @@ $__msm_save_snippet"
     fi
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$__msm_save_snippet" >> $msm_path
+    printf "%s\n\n" "$__msm_save_snippet" >> "$msm_path"
 }
 
 [ -z "$msm_preview" ] && msm_preview='cat'
