@@ -40,7 +40,8 @@ msm() {
             echo "$__msm_help"
             ;;
         *)
-            echo "Error: invalid subcommand $msm_subcommand" >&2
+            echo "Error: invalid subcommand '$msm_subcommand'" >&2
+            msm help
             ;;
     esac
 }
