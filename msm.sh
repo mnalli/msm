@@ -15,7 +15,8 @@ __msm_help='Usage: msm subcommand [string]
     msm save "<snippet>"       Save snippet
     msm validate               Validate snippet store structure
     msm validate "<snippet>"   Validate snippet
-    msm search                 Interactively search for snippets'
+    msm search                 Interactively search for snippets
+    msm search "<query>"       Interactively search with pre-loaded query'
 
 msm() {
     msm_subcommand="$1"
