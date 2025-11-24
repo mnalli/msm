@@ -25,7 +25,9 @@ function __msm_capture
         "
     )
 
-    commandline -r ''
+    if test $status -eq 0
+        commandline -r ''
+    end
 
 end
 
