@@ -49,6 +49,3 @@ function __msm_search
     end
 
 end
-
-bind \ea __msm_capture
-bind \ez __msm_search
