@@ -1,12 +1,12 @@
 
-function msm
+function msm -a subcommand -a snippet
     sh -c "
         msm_dir='$msm_dir'
         msm_path='$msm_path'
         msm_preview='$msm_preview'
 
         . '$msm_dir/msm.sh'
-        msm $argv
+        msm $subcommand '$snippet'
     "
 end
 
