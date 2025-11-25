@@ -3,6 +3,8 @@
 `msm` enables you to interactively capture command snippets from your terminal
 and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
+For `fish`, read [here](fish/README.md).
+
 ## Installation
 
 ```sh
