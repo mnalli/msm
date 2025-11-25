@@ -14,16 +14,14 @@ function __msm_capture
 
     set snippet (commandline | string collect)
 
-    set output (
-        sh -c "
-            msm_dir='$msm_dir'
-            msm_path='$msm_path'
-            msm_preview='$msm_preview'
+    sh -c "
+        msm_dir='$msm_dir'
+        msm_path='$msm_path'
+        msm_preview='$msm_preview'
 
-            . '$msm_dir/msm.sh'
-            msm save '$snippet'
-        "
-    )
+        . '$msm_dir/msm.sh'
+        msm save '$snippet'
+    "
 
     if test $status -eq 0
         commandline -r ''
