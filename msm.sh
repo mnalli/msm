@@ -72,7 +72,7 @@ __msm_validate_snippet() {
 
 __msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' "$msm_store" | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    $msm_preview "$msm_store" | sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 __msm_validate_snippet_store() {
@@ -100,11 +100,12 @@ __msm_search() {
 
     __msm_split_snippet_store |
     fzf --read0 \
+        --ansi \
         --tac \
         --prompt="Snippets> " \
         --query="$query" \
         --delimiter="\n" \
-        --with-nth=2.. \
+        --with-nth=2..,1 \
         --preview="echo {} | $msm_preview" \
         --preview-window="bottom:5:wrap" |
     sed -n '2,$ p'    # remove description line

@@ -63,8 +63,8 @@ Note: always leave one white line between one snippet and its neighbors.
 
 - **Description**: comment at the beginning of the snippet
     - One-line only
+    - The description will be searched for during fuzzy search
     - **Optional**: if not provided, a default empty one will be added
-    <!-- - The description will be searched for during fuzzy search -->
 - **Definition**
     - Can be of multiple lines
     - No empty lines
