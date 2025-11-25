@@ -5,8 +5,7 @@
 # Source this file to use it
 
 # Define these variables to change msm behavior
-[ -z "$msm_dir" ]     && msm_dir=~/.msm
-[ -z "$msm_store" ]    && msm_store=~/snippets.sh
+[ -z "$msm_store"   ] && msm_store=~/snippets.sh
 [ -z "$msm_preview" ] && msm_preview='cat'
 
 __msm_help='Usage: msm subcommand [string]
@@ -52,7 +51,7 @@ __msm_validate_snippet() {
 
     if ! echo "$__msm_validate_snippet_description" | grep --quiet "^#"; then
         echo "Missing snippet description" >&2
-        echo "$1" >&2
+        echo "'$1'" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 
@@ -72,11 +71,19 @@ __msm_validate_snippet() {
 
 __msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    $msm_preview "$msm_store" | sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 __msm_validate_snippet_store() {
-    __msm_split_snippet_store | xargs --null -n1 sh -c ". '$msm_dir/msm.sh' && __msm_validate_snippet \"\$1\"" $0
+    __msm_validate_snippet_store_rval=0
+
+    __msm_split_snippet_store < "$msm_store" | while read -r -d $'\0' snippet ; do
+        if ! __msm_validate_snippet "$snippet"; then
+            __msm_validate_snippet_store_rval=1
+        fi
+    done
+
+    return $__msm_validate_snippet_store_rval
 }
 
 __msm_save() {
@@ -98,7 +105,7 @@ $__msm_save_snippet"
 __msm_search() {
     query="$1"
 
-    __msm_split_snippet_store |
+    $msm_preview "$msm_store" | __msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \

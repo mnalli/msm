@@ -27,7 +27,6 @@ bind -x '"\ez": __msm_search_interactive'
 ```
 
 You can customize the behavior of `msm` by defining following variables:
-- `msm_dir`: installation directory of `msm` (default: `~/.msm`)
 - `msm_preview`: command used to preview snippets (default: `cat`)
     - You could use [`bat`](https://github.com/sharkdp/bat) to add syntax highlighting (also in `fzf` list)
 - `msm_store`: location of the snippet store file (default: `~/snippets.sh`)
@@ -35,11 +34,10 @@ You can customize the behavior of `msm` by defining following variables:
 Example:
 
 ```bash
-msm_dir=~/.config/bash/msm
 msm_preview='batcat --decorations=never --color=always -l bash'
 msm_store=~/.local/share/bash/snippets.sh
 
-source $msm_dir/msm.sh
+source ~/.config/bash/msm/msm.sh
 ```
 
 ## Usage
