@@ -1,78 +1,136 @@
-# `msm`
+# `msm`: a minimal snippet manager for the shell
 
-Minimal Snippet Manager for fish shell.
-
-`msm` allows you to capture command line snippets interactively from
-your terminal, and recall them using user-friendly fuzzy search.
+`msm` enables you to interactively capture command snippets from your terminal
+and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
 ## Installation
 
-Installation with Fisher:
-
-```fish
-fisher install mnalli/msm
+```sh
+git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
 ```
 
-Alternatively, you can simply copy `conf.d/msm.d` under your `conf.d` directory.
+## Configuration
 
-## Dependencies
-- `printf`
-- `sed`
-- `awk`
-- `fzf`
+Source `msm.sh` in your .rc file (e.g. `.bashrc`, `.zshrc`, `.kshrc`):
+
+```sh
+source ~/.msm/msm.sh
+```
+
+Define key bindings for interactive functions:
+
+```bash
+bind -x '"\ea": __msm_capture'
+bind -x '"\ez": __msm_search_interactive'
+```
+
+You can customize the behavior of `msm` by defining following variables:
+- `msm_dir`: installation directory of `msm` (default: `~/.msm`)
+- `msm_preview`: command used to preview snippets (default: `cat`)
+    - You could use [`bat`](https://github.com/sharkdp/bat) to add syntax highlighting (also in `fzf` list)
+- `msm_store`: location of the snippet store file (default: `~/snippets.sh`)
+
+Example:
+
+```bash
+msm_dir=~/.config/bash/msm
+msm_preview='batcat --decorations=never --color=always -l bash'
+msm_store=~/.local/share/bash/snippets.sh
+
+source $msm_dir/msm.sh
+```
 
 ## Usage
 
-Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
+- Capture snippet
+    - Capture current content of your command line and add it to the snippet store file
+    - Suggested binding: `Alt-a` (mnemonic: **add**)
+- Search
+    - Fuzzy search your snippets
+    - Suggested binding: `Alt-z`
 
-For example, write the following in your command line.
+To modify your snippets, edit your snippet store directly with your favorite editor:
 
-```fish
-git rebase -i
+```sh
+vim $msm_store
 ```
 
-Now, press `Alt-a`. Now the snippet should disappear from the command line and
-if you open the snippet store at `$msm_path` you should see the new snippet.
+Note: always leave one white line between one snippet and its neighbors.
 
-Perform fuzzy search on your snippet with `Alt-z`.
+## Snippet format
 
-You can also add a description to your snippet.
+- **Description**: comment at the beginning of the snippet
+    - One-line only
+    - **Optional**: if not provided, a default empty one will be added
+    <!-- - The description will be searched for during fuzzy search -->
+- **Definition**
+    - Can be of multiple lines
+    - No empty lines
 
-```fish
-# interactive rebase
-git rebase -i
-```
+## CLI
 
-In fish, you can insert a newline in the command line with `Alt-Enter`. You can
-also modify the command line using your favorite editor (`Alt-e`).
+`msm` has a simple command-line interface.
 
-The **description** can be of one line only: this forces the user to be succint.
-The description will be searched for during fuzzy search.
-
-The **definition** can be made up of multiple lines, but no empty lines are admitted.
-
-`msm` stores all snippets under `$msm_path` (default value is `$__fish_user_data_dir/snippets.fish`).
-As you can see, this is a plain fish file. This means that you are free to modify
-the snippet store manually using your favorite text editor and plugins.
-Just be mindful of maintaining _one blank line_ between two snippets, otherwise
-the snippet store will not be considered valid.
-
-You can also call `msm` commands from the command line, using the `msm` function.
-
-```fish
+```sh
+# view all subcommands
 msm help
 
 # validate snippet store (useful if you modified the file manually)
 msm validate
+```
 
-# validate single snippet
-msm validate "# interactive rebase
-git rebase -i"
+## Tutorial
 
-# save snippet (validation is implicit)
-msm save "# interactive rebase
-git rebase -i"
+Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
 
-# perform fuzzy search
-msm search
+For example, type the following:
+
+```sh
+git rebase -i
+```
+
+Now, press `Alt-a`. The command-line should disappear and if you open the
+snippet store at `$msm_store` you should see the newly stored snippet, after
+an empty description (added by default).
+
+```sh
+#
+git rebase -i
+
+```
+
+---
+
+If you want to be able to specify a description or to add multiline snippets, you
+must be able to **insert newlines** in your command line. In most shells you
+can't do this by default.
+
+You can do this in `bash` adding the following to your `.bashrc`.
+
+```bash
+add_nl() {
+    local region="${READLINE_LINE:0:READLINE_POINT}"
+    local after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
+
+    READLINE_LINE="$region
+$after"
+    ((READLINE_POINT++))
+}
+
+# bind it to Alt-Enter
+bind -x '"\e\r": add_nl'
+```
+
+Now you can add a description to your snippet or capture multiline snippets,
+with `Alt-Enter`.
+
+```sh
+# interactive rebase
+git rebase -i
+```
+
+```sh
+# multiline snippet example
+echo this is a
+echo multiline snippet
 ```
