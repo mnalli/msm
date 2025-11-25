@@ -8,9 +8,7 @@ To install `msm`, you can simply copy [`conf.d/msm.fish`](conf.d/msm.fish) under
 your fish installation `conf.d` directory.
 
 ```fish
-curl -sL https://raw.githubusercontent.com/mnalli/msm/refs/heads/main/fish/conf.d/msm.fish > $__fish_config_dir/conf.d/msm.fish
-
-# TODO: non basta
+curl -L https://raw.githubusercontent.com/mnalli/msm/refs/heads/main/fish/conf.d/msm.fish > $__fish_config_dir/conf.d/msm.fish
 ```
 
 ### Using [Fisher](https://github.com/jorgebucaran/fisher)
@@ -21,8 +19,6 @@ Installation with Fisher:
 fisher install mnalli/msm
 ```
 
-a pure native implementation is necessary
-
 ### Using nemo
 
 ...
@@ -32,7 +28,7 @@ a pure native implementation is necessary
 In your `config.fish`, you can add configuration variables and bindings:
 
 ```fish
-set -g msm_preview 'batcat --decorations=never --color=always -l fish'
+set -g msm_preview batcat --decorations=never --color=always -l fish
 set -g msm_store $__fish_user_data_dir/snippets.fish
 ```
 
@@ -40,7 +36,7 @@ Define key bindings for interactive functions:
 
 ```fish
 bind \ea __msm_capture
-bind \ez __msm_search
+bind \ez __msm_search_interactive
 ```
 
 ## Usage
