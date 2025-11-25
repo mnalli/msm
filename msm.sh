@@ -120,12 +120,10 @@ __msm_capture() {
 }
 
 __msm_search_interactive() {
-
     __msm_search_interactive_output=$(__msm_search "$READLINE_LINE")
 
     if [ "$__msm_search_interactive_output" ]; then
         READLINE_LINE="$__msm_search_interactive_output"
         READLINE_POINT=${#READLINE_LINE}
     fi
-
 }
