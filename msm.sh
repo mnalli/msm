@@ -6,7 +6,7 @@
 
 # Define these variables to change msm behavior
 [ -z "$msm_dir" ]     && msm_dir=~/.msm
-[ -z "$msm_path" ]    && msm_path=~/snippets.sh
+[ -z "$msm_store" ]    && msm_store=~/snippets.sh
 [ -z "$msm_preview" ] && msm_preview='cat'
 
 __msm_help='Usage: msm subcommand [string]
@@ -72,7 +72,7 @@ __msm_validate_snippet() {
 
 __msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' "$msm_path" | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    sed 's/^$/\x0/' "$msm_store" | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 __msm_validate_snippet_store() {
@@ -92,7 +92,7 @@ $__msm_save_snippet"
     fi
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$__msm_save_snippet" >> "$msm_path"
+    printf "%s\n\n" "$__msm_save_snippet" >> "$msm_store"
 }
 
 __msm_search() {

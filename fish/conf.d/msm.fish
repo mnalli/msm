@@ -2,7 +2,7 @@
 function msm -a subcommand -a snippet
     sh -c "
         msm_dir='$msm_dir'
-        msm_path='$msm_path'
+        msm_store='$msm_store'
         msm_preview='$msm_preview'
 
         . '$msm_dir/msm.sh'
@@ -16,7 +16,7 @@ function __msm_capture
 
     sh -c "
         msm_dir='$msm_dir'
-        msm_path='$msm_path'
+        msm_store='$msm_store'
         msm_preview='$msm_preview'
 
         . '$msm_dir/msm.sh'
@@ -34,7 +34,7 @@ function __msm_search
     set output (
         sh -c "
             msm_dir='$msm_dir'
-            msm_path='$msm_path'
+            msm_store='$msm_store'
             msm_preview='$msm_preview'
 
             . '$msm_dir/msm.sh'
