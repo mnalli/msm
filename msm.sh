@@ -8,7 +8,7 @@
 [ -z "$msm_store"   ] && msm_store=~/snippets.sh
 [ -z "$msm_preview" ] && msm_preview='cat'
 
-__msm_help='Usage: msm subcommand [string]
+_msm_help='Usage: msm subcommand [string]
 
     msm help                   Show this message
     msm save "<snippet>"       Save snippet
@@ -18,99 +18,99 @@ __msm_help='Usage: msm subcommand [string]
     msm search "<query>"       Interactively search with pre-loaded query'
 
 msm() {
-    msm_subcommand="$1"
-    msm_snippet="$2"
+    _msm_subcommand="$1"
+    _msm_snippet="$2"
 
-    case "$msm_subcommand" in
+    case "$_msm_subcommand" in
         save)
-            __msm_save "$msm_snippet"
+            _msm_save "$_msm_snippet"
             ;;
         validate)
-            if [ -z "$msm_snippet" ]; then
-                __msm_validate_snippet_store
+            if [ -z "$_msm_snippet" ]; then
+                _msm_validate_snippet_store
             else
-                __msm_validate_snippet "$msm_snippet"
+                _msm_validate_snippet "$_msm_snippet"
             fi
             ;;
         search)
-            __msm_search "$msm_snippet"
+            _msm_search "$_msm_snippet"
             ;;
         help)
-            echo "$__msm_help"
+            echo "$_msm_help"
             ;;
         *)
-            echo "Invalid subcommand '$msm_subcommand'" >&2
+            echo "Invalid subcommand '$_msm_subcommand'" >&2
             msm help
             ;;
     esac
 }
 
-__msm_validate_snippet() {
-    __msm_validate_snippet_description="$(echo "$1" | sed -n 1p)"
-    __msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
+_msm_validate_snippet() {
+    _msm_validate_snippet_description="$(echo "$1" | sed -n 1p)"
+    _msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
 
-    if ! echo "$__msm_validate_snippet_description" | grep --quiet "^#"; then
+    if ! echo "$_msm_validate_snippet_description" | grep --quiet "^#"; then
         echo "Missing snippet description" >&2
         echo "'$1'" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 
     # match description
-    if echo "$__msm_validate_snippet_definition" | grep -n "^#" >&2; then
+    if echo "$_msm_validate_snippet_definition" | grep -n "^#" >&2; then
         echo "Cannot have comments in definition (description can be one-line only)" >&2
         echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 
-    if echo "$__msm_validate_snippet_definition" | grep -n -E '^[ \t]*$' >&2; then
+    if echo "$_msm_validate_snippet_definition" | grep -n -E '^[ \t]*$' >&2; then
         echo "Cannot have empty (or white) lines in definition" >&2
         echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     fi
 }
 
-__msm_split_snippet_store() {
+_msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
     sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
-__msm_validate_snippet_store() {
-    __msm_validate_snippet_store_rval=0
+_msm_validate_snippet_store() {
+    _msm_validate_snippet_store_rval=0
 
-    __msm_split_snippet_store < "$msm_store" | while read -r -d $'\0' snippet ; do
-        if ! __msm_validate_snippet "$snippet"; then
-            __msm_validate_snippet_store_rval=1
+    _msm_split_snippet_store < "$msm_store" | while read -r -d $'\0' snippet ; do
+        if ! _msm_validate_snippet "$snippet"; then
+            _msm_validate_snippet_store_rval=1
         fi
     done
 
-    return $__msm_validate_snippet_store_rval
+    return $_msm_validate_snippet_store_rval
 }
 
-__msm_save() {
-    __msm_save_snippet="$1"
+_msm_save() {
+    _msm_save_snippet="$1"
 
-    if ! echo "$__msm_save_snippet" | sed -n 1p | grep --quiet '^#'; then
-        __msm_save_snippet="#
-$__msm_save_snippet"
+    if ! echo "$_msm_save_snippet" | sed -n 1p | grep --quiet '^#'; then
+        _msm_save_snippet="#
+$_msm_save_snippet"
     fi
 
-    if ! __msm_validate_snippet "$__msm_save_snippet"; then
+    if ! _msm_validate_snippet "$_msm_save_snippet"; then
         return 1
     fi
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$__msm_save_snippet" >> "$msm_store"
+    printf "%s\n\n" "$_msm_save_snippet" >> "$msm_store"
 }
 
-__msm_search() {
-    query="$1"
+_msm_search() {
+    _msm_search_query="$1"
 
-    $msm_preview "$msm_store" | __msm_split_snippet_store |
+    $msm_preview "$msm_store" | _msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \
         --prompt="Snippets> " \
-        --query="$query" \
+        --query="$_msm_search_query" \
         --delimiter="\n" \
         --with-nth=2..,1 \
         --preview="echo {} | $msm_preview" \
@@ -119,19 +119,19 @@ __msm_search() {
 }
 
 msm_capture() {
-    if ! __msm_save "$READLINE_LINE"; then
+    if ! _msm_save "$READLINE_LINE"; then
         return 1
     fi
 
-    READLINE_LINE=""
+    READLINE_LINE=''
     READLINE_POINT=${#READLINE_LINE}
 }
 
 msm_search_interactive() {
-    __msm_search_interactive_output=$(__msm_search "$READLINE_LINE")
+    _msm_search_interactive_output=$(_msm_search "$READLINE_LINE")
 
-    if [ "$__msm_search_interactive_output" ]; then
-        READLINE_LINE="$__msm_search_interactive_output"
+    if [ "$_msm_search_interactive_output" ]; then
+        READLINE_LINE="$_msm_search_interactive_output"
         READLINE_POINT=${#READLINE_LINE}
     fi
 }
