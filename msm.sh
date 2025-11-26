@@ -5,8 +5,8 @@
 # Source this file to use it
 
 # Define these variables to change msm behavior
-[ -z "$msm_store"   ] && msm_store=~/snippets.sh
-[ -z "$msm_preview" ] && msm_preview='cat'
+[ -z "$MSM_STORE"   ] && MSM_STORE=~/snippets.sh
+[ -z "$MSM_PREVIEW" ] && MSM_PREVIEW='cat'
 
 _msm_help='Usage: msm subcommand [string]
 
@@ -77,7 +77,7 @@ _msm_split_snippet_store() {
 _msm_validate_snippet_store() {
     _msm_validate_snippet_store_rval=0
 
-    _msm_split_snippet_store < "$msm_store" | while read -r -d $'\0' snippet ; do
+    _msm_split_snippet_store < "$MSM_STORE" | while read -r -d $'\0' snippet ; do
         if ! _msm_validate_snippet "$snippet"; then
             _msm_validate_snippet_store_rval=1
         fi
@@ -99,13 +99,13 @@ $_msm_save_snippet"
     fi
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$_msm_save_snippet" >> "$msm_store"
+    printf "%s\n\n" "$_msm_save_snippet" >> "$MSM_STORE"
 }
 
 _msm_search() {
     _msm_search_query="$1"
 
-    $msm_preview "$msm_store" | _msm_split_snippet_store |
+    $MSM_PREVIEW "$MSM_STORE" | _msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \
@@ -113,7 +113,7 @@ _msm_search() {
         --query="$_msm_search_query" \
         --delimiter="\n" \
         --with-nth=2..,1 \
-        --preview="echo {} | $msm_preview" \
+        --preview="echo {} | $MSM_PREVIEW" \
         --preview-window="bottom:5:wrap" |
     sed -n '2,$ p'    # remove description line
 }

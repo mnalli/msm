@@ -28,8 +28,8 @@ fisher install mnalli/msm
 In your `config.fish`, you can add configuration variables and bindings:
 
 ```fish
-set -g msm_preview batcat --decorations=never --color=always -l fish
-set -g msm_store $__fish_user_data_dir/snippets.fish
+set -g MSM_PREVIEW batcat --decorations=never --color=always -l fish
+set -g MSM_STORE $__fish_user_data_dir/snippets.fish
 ```
 
 Define key bindings for interactive functions:

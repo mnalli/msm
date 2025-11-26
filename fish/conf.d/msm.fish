@@ -4,8 +4,8 @@
 # Source this file to use it
 
 # Define these variables to change msm behavior
-not set -q msm_store   && set -g msm_store ~/snippets.sh
-not set -q msm_preview && set -g msm_preview cat
+not set -q MSM_STORE   && set -g MSM_STORE ~/snippets.sh
+not set -q MSM_PREVIEW && set -g MSM_PREVIEW cat
 
 set -l _msm_help 'Usage: msm subcommand [string]
 
@@ -70,7 +70,7 @@ function _msm_validate_snippet_store
     set -l rval 0
 
     # split store into snippets
-    set -l raw (_msm_split_snippet_store < "$msm_store")
+    set -l raw (_msm_split_snippet_store < "$MSM_STORE")
     set -l snippets (string split \0 -- $raw)
 
     for snippet in $snippets
@@ -95,12 +95,12 @@ $snippet"
     end
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$snippet" >> "$msm_store"
+    printf "%s\n\n" "$snippet" >> "$MSM_STORE"
 end
 
 # Search snippets using fzf. Query is optional.
 function _msm_search -a query -d 'Search snippets (query is optional)'
-    $msm_preview "$msm_store" | _msm_split_snippet_store |
+    $MSM_PREVIEW "$MSM_STORE" | _msm_split_snippet_store |
         fzf --read0 \
             --ansi \
             --tac \
@@ -108,7 +108,7 @@ function _msm_search -a query -d 'Search snippets (query is optional)'
             --query="$query" \
             --delimiter="\n" \
             --with-nth=2..,1 \
-            --preview="echo {} | $msm_preview" \
+            --preview="echo {} | $MSM_PREVIEW" \
             --preview-window="bottom:5:wrap" |
         sed -n '2,$ p'
 end

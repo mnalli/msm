@@ -27,15 +27,15 @@ bind -x '"\ez": msm_search_interactive'
 ```
 
 You can customize the behavior of `msm` by defining following variables:
-- `msm_preview`: command used to preview snippets (default: `cat`)
+- `MSM_PREVIEW`: command used to preview snippets (default: `cat`)
     - You could use [`bat`](https://github.com/sharkdp/bat) to add syntax highlighting (also in `fzf` list)
-- `msm_store`: location of the snippet store file (default: `~/snippets.sh`)
+- `MSM_STORE`: location of the snippet store file (default: `~/snippets.sh`)
 
 Example:
 
 ```bash
-msm_preview='batcat --decorations=never --color=always -l bash'
-msm_store=~/.local/share/bash/snippets.sh
+MSM_PREVIEW='batcat --decorations=never --color=always -l bash'
+MSM_STORE=~/.local/share/bash/snippets.sh
 
 source ~/.config/bash/msm/msm.sh
 ```
@@ -52,7 +52,7 @@ source ~/.config/bash/msm/msm.sh
 To modify your snippets, edit your snippet store directly with your favorite editor:
 
 ```sh
-vim $msm_store
+vim $MSM_STORE
 ```
 
 Note: always leave one white line between one snippet and its neighbors.
@@ -90,7 +90,7 @@ git rebase -i
 ```
 
 Now, press `Alt-a`. The command-line should disappear and if you open the
-snippet store at `$msm_store` you should see the newly stored snippet, after
+snippet store at `$MSM_STORE` you should see the newly stored snippet, after
 an empty description (added by default).
 
 ```sh
