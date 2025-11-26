@@ -113,7 +113,7 @@ function __msm_search -a query -d 'Search snippets (query is optional)'
         sed -n '2,$ p'
 end
 
-function __msm_capture -d 'Save current commandline as snippet'
+function msm_capture -d 'Save current commandline as snippet'
     set -l line "$(commandline)"
 
     if not __msm_save "$line"
@@ -124,7 +124,7 @@ function __msm_capture -d 'Save current commandline as snippet'
     commandline -r ''
 end
 
-function __msm_search_interactive
+function msm_search_interactive
     set -l current (commandline)
     set -l output (__msm_search "$current")
 

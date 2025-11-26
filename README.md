@@ -22,8 +22,8 @@ source ~/.msm/msm.sh
 Define key bindings for interactive functions:
 
 ```bash
-bind -x '"\ea": __msm_capture'
-bind -x '"\ez": __msm_search_interactive'
+bind -x '"\ea": msm_capture'
+bind -x '"\ez": msm_search_interactive'
 ```
 
 You can customize the behavior of `msm` by defining following variables:

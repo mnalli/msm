@@ -118,7 +118,7 @@ __msm_search() {
     sed -n '2,$ p'    # remove description line
 }
 
-__msm_capture() {
+msm_capture() {
     if ! __msm_save "$READLINE_LINE"; then
         return 1
     fi
@@ -127,7 +127,7 @@ __msm_capture() {
     READLINE_POINT=${#READLINE_LINE}
 }
 
-__msm_search_interactive() {
+msm_search_interactive() {
     __msm_search_interactive_output=$(__msm_search "$READLINE_LINE")
 
     if [ "$__msm_search_interactive_output" ]; then

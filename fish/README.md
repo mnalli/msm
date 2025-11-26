@@ -35,8 +35,8 @@ set -g msm_store $__fish_user_data_dir/snippets.fish
 Define key bindings for interactive functions:
 
 ```fish
-bind \ea __msm_capture
-bind \ez __msm_search_interactive
+bind \ea msm_capture
+bind \ez msm_search_interactive
 ```
 
 ## Usage
