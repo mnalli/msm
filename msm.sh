@@ -14,8 +14,7 @@ _msm_help='Usage: msm subcommand [string]
     msm save "<snippet>"       Save snippet
     msm validate               Validate snippet store structure
     msm validate "<snippet>"   Validate snippet
-    msm search                 Interactively search for snippets
-    msm search "<query>"       Interactively search with pre-loaded query'
+    msm search                 Interactively search for snippets'
 
 msm() {
     _msm_subcommand="$1"
@@ -103,14 +102,11 @@ $_msm_save_snippet"
 }
 
 _msm_search() {
-    _msm_search_query="$1"
-
     $MSM_PREVIEW "$MSM_STORE" | _msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \
         --prompt="Snippets> " \
-        --query="$_msm_search_query" \
         --delimiter="\n" \
         --with-nth=2..,1 \
         --preview="echo {} | $MSM_PREVIEW" \
