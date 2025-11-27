@@ -79,6 +79,8 @@ msm validate
 
 ## Tutorial
 
+![Usage example](usage.gif)
+
 Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
 
 For example, type the following:
