@@ -3,13 +3,15 @@
 `msm` enables you to interactively capture command snippets from your terminal
 and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
-For `fish`, read [here](fish/README.md).
+For `fish`, read [here](https://github.com/mnalli/msm.fish/blob/main/README.md).
 
 ## Installation
 
 ```sh
 git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
 ```
+
+Note: instead of `~/.msm/` you can use the path you prefer.
 
 ## Configuration
 
@@ -19,7 +21,7 @@ Source `msm.sh` in your .rc file (e.g. `.bashrc`, `.zshrc`, `.kshrc`):
 source ~/.msm/msm.sh
 ```
 
-Define key bindings for interactive functions:
+ALso, define key bindings for interactive functions. In Bash you could do:
 
 ```bash
 bind -x '"\ea": msm_capture'
@@ -27,27 +29,22 @@ bind -x '"\ez": msm_search_interactive'
 ```
 
 You can customize the behavior of `msm` by defining following variables:
-- `MSM_PREVIEW`: command used to preview snippets (default: `cat`)
-    - You could use [`bat`](https://github.com/sharkdp/bat) to add syntax highlighting (also in `fzf` list)
-- `MSM_STORE`: location of the snippet store file (default: `~/snippets.sh`)
 
-Example:
-
-```bash
+```sh
+# command used to preview snippets (default: cat)
 MSM_PREVIEW='batcat --decorations=never --color=always -l bash'
+# location of the snippet store file (default: ~/snippets.sh)
 MSM_STORE=~/.local/share/bash/snippets.sh
-
-source ~/.config/bash/msm/msm.sh
 ```
 
 ## Usage
 
 - Capture snippet
     - Capture current content of your command line and add it to the snippet store file
-    - Suggested binding: `Alt-a` (mnemonic: **add**)
+    - Suggested key binding: `Alt-a` (mnemonic: **add**)
 - Search
     - Fuzzy search your snippets
-    - Suggested binding: `Alt-z`
+    - Suggested key binding: `Alt-z`
 
 To modify your snippets, edit your snippet store directly with your favorite editor:
 
@@ -55,7 +52,8 @@ To modify your snippets, edit your snippet store directly with your favorite edi
 vim $MSM_STORE
 ```
 
-Note: always leave one white line between one snippet and its neighbors.
+Always leave one white line between one snippet and its neighbors. You can run
+`msm validate` to validate the snippet store after you modified it.
 
 ## Snippet format
 
@@ -91,7 +89,7 @@ git rebase -i
 
 Now, press `Alt-a`. The command-line should disappear and if you open the
 snippet store at `$MSM_STORE` you should see the newly stored snippet, after
-an empty description (added by default).
+an empty description (added by default):
 
 ```sh
 #
@@ -109,20 +107,19 @@ You can do this in `bash` adding the following to your `.bashrc`.
 
 ```bash
 add_nl() {
-    local region="${READLINE_LINE:0:READLINE_POINT}"
+    local before="${READLINE_LINE:0:READLINE_POINT}"
     local after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
 
-    READLINE_LINE="$region
+    READLINE_LINE="$before
 $after"
     ((READLINE_POINT++))
 }
 
-# bind it to Alt-Enter
 bind -x '"\e\r": add_nl'
 ```
 
 Now you can add a description to your snippet or capture multiline snippets,
-with `Alt-Enter`.
+with `Alt-Enter`:
 
 ```sh
 # interactive rebase
@@ -133,4 +130,17 @@ git rebase -i
 # multiline snippet example
 echo this is a
 echo multiline snippet
+```
+
+---
+
+If you recall a snippet, `msm` will insert it under the cursor in your current
+command line. Here are some examples ('_' is the cursor location):
+
+```sh
+# recall command that generates a stream
+less -f <(_)
+
+# recall hard to remember path
+ls _
 ```
