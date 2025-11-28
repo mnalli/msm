@@ -15,17 +15,23 @@ Note: instead of `~/.msm/` you can use the path you prefer.
 
 ## Configuration
 
-Source `msm.sh` in your .rc file (e.g. `.bashrc`, `.zshrc`, `.kshrc`):
+Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` file.
 
 ```sh
-source ~/.msm/msm.sh
+# bash
+source <(cat ~/.msm/msm.{sh,bash})
+
+# TODO: zsh
 ```
 
-ALso, define key bindings for interactive functions. In Bash you could do:
+ALso, define key bindings for interactive functions:
 
-```bash
+```sh
+# bash
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_search_interactive'
+
+# TODO: zsh
 ```
 
 You can customize the behavior of `msm` by defining following variables:
