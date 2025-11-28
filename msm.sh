@@ -120,7 +120,7 @@ msm_capture() {
     fi
 
     READLINE_LINE=''
-    READLINE_POINT=${#READLINE_LINE}
+    READLINE_POINT=0
 }
 
 msm_search_interactive() {
