@@ -113,23 +113,3 @@ _msm_search() {
         --preview-window="bottom:5:wrap" |
     sed -n '2,$ p'    # remove description line
 }
-
-msm_capture() {
-    if ! _msm_save "$READLINE_LINE"; then
-        return 1
-    fi
-
-    READLINE_LINE=''
-    READLINE_POINT=0
-}
-
-msm_search_interactive() {
-    _msm_search_interactive_output=$(_msm_search "$READLINE_LINE")
-
-    _msm_search_interactive_before="${READLINE_LINE:0:READLINE_POINT}"
-    _msm_search_interactive_after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
-
-    # insert output
-    READLINE_LINE="$_msm_search_interactive_before$_msm_search_interactive_output$_msm_search_interactive_after"
-    READLINE_POINT=$(( ${#_msm_search_interactive_before} + ${#_msm_search_interactive_output} ))
-}
