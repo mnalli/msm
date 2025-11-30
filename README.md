@@ -21,7 +21,8 @@ Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` f
 # bash
 source <(cat ~/.msm/msm.{sh,bash})
 
-# TODO: zsh
+#zsh
+soruce <(cat ~/.msm/msm.{zsh,sh})
 ```
 
 Also, define key bindings for interactive functions:
@@ -31,7 +32,9 @@ Also, define key bindings for interactive functions:
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_search_interactive'
 
-# TODO: zsh
+#zsh
+bindkey '^t' msm_capture
+bindkey '^z' msm_search_interactive
 ```
 
 You can customize the behavior of `msm` by defining following variables:
@@ -152,3 +155,17 @@ less -f <(_)
 # recall hard to remember path
 ls _
 ```
+
+## For MacOS
+
+First install gnu-sed and fzf with
+```sh
+brew install gnu-sed fzf
+```
+
+Then define
+
+```sh
+SED_CMD=gsed
+```
+And enjoy :)
