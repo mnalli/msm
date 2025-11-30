@@ -7,6 +7,7 @@
 # Define these variables to change msm behavior
 [ -z "$MSM_STORE"   ] && MSM_STORE=~/snippets.sh
 [ -z "$MSM_PREVIEW" ] && MSM_PREVIEW='cat'
+[ -z "$SED_CMD" ] && SED_CMD='sed'
 
 _msm_help='Usage: msm subcommand [string]
 
@@ -45,8 +46,8 @@ msm() {
 }
 
 _msm_validate_snippet() {
-    _msm_validate_snippet_description="$(echo "$1" | sed -n 1p)"
-    _msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
+    _msm_validate_snippet_description="$(echo "$1" | $SED_CMD -n 1p)"
+    _msm_validate_snippet_definition="$(echo "$1" | $SED_CMD -n '2,$ p')"
 
     if ! echo "$_msm_validate_snippet_description" | grep --quiet "^#"; then
         echo "Missing snippet description" >&2
@@ -70,7 +71,7 @@ _msm_validate_snippet() {
 
 _msm_split_snippet_store() {
     # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    $SED_CMD 's/^$/\x0/' | $SED_CMD --null-data -e 's/^\n//' -e 's/\n$//'
 }
 
 _msm_validate_snippet_store() {
@@ -88,7 +89,7 @@ _msm_validate_snippet_store() {
 _msm_save() {
     _msm_save_snippet="$1"
 
-    if ! echo "$_msm_save_snippet" | sed -n 1p | grep --quiet '^#'; then
+    if ! echo "$_msm_save_snippet" | $SED_CMD -n 1p | grep --quiet '^#'; then
         _msm_save_snippet="#
 $_msm_save_snippet"
     fi
@@ -111,5 +112,5 @@ _msm_search() {
         --with-nth=2..,1 \
         --preview="echo {} | $MSM_PREVIEW" \
         --preview-window="bottom:5:wrap" |
-    sed -n '2,$ p'    # remove description line
+    $SED_CMD -n '2,$ p'    # remove description line
 }
