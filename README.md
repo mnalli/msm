@@ -19,7 +19,7 @@ Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` f
 
 ```sh
 # bash
-source <(cat ~/.msm/msm.{sh,bash})
+eval "$(cat ~/.msm/msm.{sh,bash})"
 
 # TODO: zsh
 ```
