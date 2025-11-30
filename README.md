@@ -24,7 +24,7 @@ source <(cat ~/.msm/msm.{sh,bash})
 # TODO: zsh
 ```
 
-ALso, define key bindings for interactive functions:
+Also, define key bindings for interactive functions:
 
 ```sh
 # bash
