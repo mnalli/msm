@@ -108,26 +108,11 @@ git rebase -i
 ---
 
 If you want to be able to specify a description or to add multiline snippets, you
-must be able to **insert newlines** in your command line. In most shells you
-can't do this by default.
+must be able to **insert newline characters** in your command line. Shells like
+`zsh` or `fish` can do this by default (with `Alt-Enter`), but `bash` cannot.
+View [here](https://github.com/mnalli/insert_newline.bash) how to add this behavior.
 
-You can do this in `bash` adding the following to your `.bashrc`.
-
-```bash
-add_nl() {
-    local before="${READLINE_LINE:0:READLINE_POINT}"
-    local after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
-
-    READLINE_LINE="$before
-$after"
-    ((READLINE_POINT++))
-}
-
-bind -x '"\e\r": add_nl'
-```
-
-Now you can add a description to your snippet or capture multiline snippets,
-with `Alt-Enter`:
+The followings are valid snippets:
 
 ```sh
 # interactive rebase
