@@ -1,6 +1,6 @@
-# `msm`: a minimal snippet manager for `fish`
+# `msm`: a minimal snippet manager for the shell
 
-Fish-native implementation of [`msm`](https://github.com/mnalli/msm.fish/blob/main/README.md).
+Fish-native implementation of [`msm`](../README.md).
 
 ## Installation
 
@@ -8,7 +8,7 @@ To install it, you can simply copy [`conf.d/msm.fish`](conf.d/msm.fish) under
 your fish installation `conf.d` directory.
 
 ```fish
-curl -L https://raw.githubusercontent.com/mnalli/msm.fish/refs/heads/main/conf.d/msm.fish > $__fish_config_dir/conf.d/msm.fish
+curl https://raw.githubusercontent.com/mnalli/msm/refs/heads/main/fish/conf.d/msm.fish -o $__fish_config_dir/conf.d/msm.fish
 ```
 
 ### Using [`fisher`](https://github.com/jorgebucaran/fisher)
@@ -34,7 +34,7 @@ bind \ez msm_search_interactive
 
 ## Usage
 
-View usage tutorial [here](https://github.com/mnalli/msm?tab=readme-ov-file#usage).
+View usage tutorial [here](../README.md#usage).
 
 Note: in `fish`, you can add a newline in the command line with `Alt-Enter` by default.
 
