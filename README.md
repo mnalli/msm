@@ -85,7 +85,7 @@ msm validate
 
 ## Tutorial
 
-![Usage example](usage.gif)
+![Usage example](assets/usage.gif)
 
 Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
 
