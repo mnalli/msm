@@ -11,11 +11,13 @@ your fish installation `conf.d` directory.
 curl -L https://raw.githubusercontent.com/mnalli/msm.fish/refs/heads/main/conf.d/msm.fish > $__fish_config_dir/conf.d/msm.fish
 ```
 
-### Using [Fisher](https://github.com/jorgebucaran/fisher)
+### Using [`fisher`](https://github.com/jorgebucaran/fisher)
 
-```fish
-fisher install mnalli/msm.fish
-```
+Installation with `fisher` is not supported. Its support will depend on
+[this issue](https://github.com/jorgebucaran/fisher/issues/815).
+
+It used to be supported with an independent `msm.fish` repository, but its
+support was dropped in favour of a clearer monorepo approach.
 
 ## Configuration
 
