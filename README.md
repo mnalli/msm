@@ -3,7 +3,7 @@
 `msm` enables you to interactively capture command snippets from your terminal
 and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
-For `fish`, read [here](https://github.com/mnalli/msm.fish/blob/main/README.md).
+For `fish`, read [here](fish/README.md).
 
 ## Installation
 
@@ -19,10 +19,10 @@ Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` f
 
 ```sh
 # bash
-source <(cat ~/.msm/msm.{sh,bash})
+eval "$(cat ~/.msm/msm.{sh,bash})"
 
-#zsh
-soruce <(cat ~/.msm/msm.{zsh,sh})
+# zsh
+eval "$(cat ~/.msm/msm.{sh,zsh})"
 ```
 
 Also, define key bindings for interactive functions:
@@ -32,7 +32,7 @@ Also, define key bindings for interactive functions:
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_search_interactive'
 
-#zsh
+# zsh
 bindkey '^t' msm_capture
 bindkey '^z' msm_search_interactive
 ```
@@ -88,7 +88,7 @@ msm validate
 
 ## Tutorial
 
-![Usage example](usage.gif)
+![Usage example](assets/usage.gif)
 
 Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
 
@@ -111,26 +111,11 @@ git rebase -i
 ---
 
 If you want to be able to specify a description or to add multiline snippets, you
-must be able to **insert newlines** in your command line. In most shells you
-can't do this by default.
+must be able to **insert newline characters** in your command line. Shells like
+`zsh` or `fish` can do this by default (with `Alt-Enter`), but `bash` cannot.
+View [here](https://github.com/mnalli/insert_newline.bash) how to add this behavior.
 
-You can do this in `bash` adding the following to your `.bashrc`.
-
-```bash
-add_nl() {
-    local before="${READLINE_LINE:0:READLINE_POINT}"
-    local after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
-
-    READLINE_LINE="$before
-$after"
-    ((READLINE_POINT++))
-}
-
-bind -x '"\e\r": add_nl'
-```
-
-Now you can add a description to your snippet or capture multiline snippets,
-with `Alt-Enter`:
+The followings are valid snippets:
 
 ```sh
 # interactive rebase
@@ -155,17 +140,3 @@ less -f <(_)
 # recall hard to remember path
 ls _
 ```
-
-## For MacOS
-
-First install gnu-sed and fzf with
-```sh
-brew install gnu-sed fzf
-```
-
-Then define
-
-```sh
-SED_CMD=gsed
-```
-And enjoy :)

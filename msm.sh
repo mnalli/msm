@@ -69,8 +69,9 @@ _msm_validate_snippet() {
 }
 
 _msm_split_snippet_store() {
-    # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    # split input into paragraph records (group of non‑blank lines),
+    # then print them separated by NUL bytes
+    awk 'BEGIN { RS=""; ORS="\0" } { print }'
 }
 
 _msm_validate_snippet_store() {
