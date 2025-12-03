@@ -75,17 +75,9 @@ _msm_split_snippet_store() {
 }
 
 _msm_validate_snippet_store() {
-    _msm_validate_snippet_store_status=0
-
-    while read -r -d $'\0' snippet ; do
-        if ! _msm_validate_snippet "$snippet"; then
-            _msm_validate_snippet_store_status=1
-        fi
-    done << EOF
-$(cat $MSM_STORE | _msm_split_snippet_store)
-EOF
-
-    return $_msm_validate_snippet_store_status
+    cat $MSM_STORE | _msm_split_snippet_store | while read -r -d $'\0' snippet ; do
+        _msm_validate_snippet "$snippet" || return 1
+    done
 }
 
 _msm_save() {
