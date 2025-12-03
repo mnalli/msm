@@ -82,7 +82,7 @@ _msm_validate_snippet_store() {
             _msm_validate_snippet_store_status=1
         fi
     done << EOF
-$(_msm_split_snippet_store < "$MSM_STORE")
+$(cat $MSM_STORE | _msm_split_snippet_store)
 EOF
 
     return $_msm_validate_snippet_store_status
@@ -100,12 +100,12 @@ $_msm_save_snippet"
         return 1
     fi
 
-    # write in snippet store, adding space at the end
-    printf "%s\n\n" "$_msm_save_snippet" >> "$MSM_STORE"
+    # append whitelines to snippet definition + write to master store
+    printf "%s\n\n" "$_msm_save_snippet" >> ${MSM_STORE%% *}
 }
 
 _msm_search() {
-    $MSM_PREVIEW "$MSM_STORE" | _msm_split_snippet_store |
+    $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \
