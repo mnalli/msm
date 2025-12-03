@@ -11,11 +11,11 @@ For `fish`, read [here](fish/README.md).
 git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
 ```
 
-Note: instead of `~/.msm/` you can use the path you prefer.
+*Note*: instead of `~/.msm/` you can use the path you prefer.
 
 ## Configuration
 
-Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` file.
+Source `msm.sh` and your specific shell bindings in your `.rc` file.
 
 ```sh
 # bash
@@ -28,11 +28,11 @@ eval "$(cat ~/.msm/msm.{sh,zsh})"
 Also, define key bindings for interactive functions:
 
 ```sh
-# bash
+# bash - suggested bindings: Alt-a, Alt-z
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_recall'
 
-# zsh
+# zsh - suggested bindings: Ctrl-t, Ctrl-z
 bindkey '^t' msm_capture
 bindkey '^z' msm_recall
 ```
@@ -48,12 +48,8 @@ MSM_STORE=~/.local/share/bash/snippets.sh
 
 ## Usage
 
-- Capture snippet
-    - Capture current content of your command line and add it to the snippet store file
-    - Suggested key binding: `Alt-a` (mnemonic: **add**)
-- Search
-    - Fuzzy search your snippets
-    - Suggested key binding: `Alt-z`
+- **Capture**: capture current content of your command line and add it to the snippet store file
+- **Recall**: fuzzy search your snippets and insert the selected one in the command line
 
 To modify your snippets, edit your snippet store directly with your favorite editor:
 
@@ -61,18 +57,18 @@ To modify your snippets, edit your snippet store directly with your favorite edi
 vim $MSM_STORE
 ```
 
-Always leave one white line between one snippet and its neighbors. You can run
-`msm validate` to validate the snippet store after you modified it.
+Always leave one or more empty lines between one snippet and the other. You can
+run `msm validate` to validate the snippet store after you modified it.
 
 ## Snippet format
 
 - **Description**: comment at the beginning of the snippet
     - One-line only
-    - The description will be searched for during fuzzy search
+    - The description will be fuzzy-searched for during recall
     - **Optional**: if not provided, a default empty one will be added
 - **Definition**
     - Can be of multiple lines
-    - No empty lines
+    - No empty lines allowed
 
 ## CLI
 
@@ -147,15 +143,15 @@ It is possible to configure multiple snippet stores.
 
 ```sh
 # use echo subcommand to expand `~`
-MSM_STORE=$(echo ~/snippets.sh ~/paths.path)
+MSM_STORE=$(echo ~/snippets.sh ~/system.path)
 ```
 
 - During search, `msm` will filter results from all the stores.
-- When capturing a snippet, `msm` will store it in the first store in the list,
-  e.g. `~/snippets.sh`, aka **master store**. If you wish to move it to another
-  store, you can do it manually.
+- When capturing a snippet, `msm` will store it in the **master store**, which
+  is the first one in the list, i.e. `~/snippets.sh`. If you wish to move it to
+  another store, you can do it manually.
 
-
+Here's how you can easily interact with different stores:
 
 ```sh
 # open all stores in vim
