@@ -11,7 +11,7 @@ zle -N msm_capture
 msm_search_interactive() {
     local output before after
 
-    output=$(_msm_search "$BUFFER") || return 1
+    output=$(_msm_search) || return 1
 
     before=${BUFFER[1,CURSOR]}
     after=${BUFFER[CURSOR+1,-1]}

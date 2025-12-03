@@ -32,7 +32,7 @@ msm() {
             fi
             ;;
         search)
-            _msm_search "$_msm_snippet"
+            _msm_search
             ;;
         help)
             echo "$_msm_help"

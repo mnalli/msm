@@ -12,7 +12,7 @@ msm_capture() {
 msm_search_interactive() {
     local output before after
 
-    output=$(_msm_search "$READLINE_LINE")
+    output=$(_msm_search) || return 1
 
     before="${READLINE_LINE:0:READLINE_POINT}"
     after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"
