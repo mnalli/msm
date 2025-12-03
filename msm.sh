@@ -106,6 +106,7 @@ _msm_search() {
         --delimiter="\n" \
         --with-nth=2..,1 \
         --preview="echo {} | $MSM_PREVIEW" \
-        --preview-window="bottom:5:wrap" |
+        --preview-window="bottom:5:wrap" \
+        --tabstop=2 |
     sed -n '2,$ p'    # remove description line
 }
