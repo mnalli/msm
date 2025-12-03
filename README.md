@@ -140,3 +140,27 @@ less -f <(_)
 # recall hard to remember path
 ls _
 ```
+
+## Using multiple snippet stores
+
+It is possible to configure multiple snippet stores.
+
+```sh
+# use echo subcommand to expand `~`
+MSM_STORE=$(echo ~/snippets.sh ~/paths.path)
+```
+
+- During search, `msm` will filter results from all the stores.
+- When capturing a snippet, `msm` will store it in the first store in the list,
+  e.g. `~/snippets.sh`, aka **master store**. If you wish to move it to another
+  store, you can do it manually.
+
+
+
+```sh
+# open all stores in vim
+vim $MSM_STORE
+
+# open second store
+vim $(echo $MSM_STORE | cut -d ' ' -f2)
+```
