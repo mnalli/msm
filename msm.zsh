@@ -1,3 +1,5 @@
+# zsh functions for interactive usage
+
 msm_capture() {
     _msm_save "$BUFFER" || return 1
 
