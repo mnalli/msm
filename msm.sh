@@ -71,7 +71,7 @@ _msm_validate_snippet() {
 _msm_split_snippet_store() {
     # split input into paragraph records (group of non‑blank lines),
     # then print them separated by NUL bytes
-    awk 'BEGIN { RS=""; ORS="\0" } { print }'
+    awk 'BEGIN { RS=""; ORS=" \0" } { print }'
 }
 
 _msm_validate_snippet_store() {
