@@ -75,6 +75,7 @@ _msm_split_snippet_store() {
 }
 
 _msm_validate_snippet_store() {
+    # read -d is technically not POSIX-compliant... we'll see if it will cause trouble
     cat $MSM_STORE | _msm_split_snippet_store | while read -r -d $'\0' snippet ; do
         _msm_validate_snippet "$snippet" || return 1
     done
