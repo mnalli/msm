@@ -7,7 +7,7 @@ msm_capture() {
     READLINE_POINT=0
 }
 
-msm_search_interactive() {
+msm_recall() {
     local output
 
     output=$(_msm_search) || return 1

@@ -121,7 +121,7 @@ function msm_capture -d 'Save current commandline as snippet'
     commandline -r ''
 end
 
-function msm_search_interactive
+function msm_recall
     set -l current (commandline)
     set -l output (_msm_search "$current")
 

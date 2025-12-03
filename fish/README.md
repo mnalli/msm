@@ -29,7 +29,7 @@ set -g MSM_PREVIEW batcat --decorations=never --color=always -l fish
 set -g MSM_STORE $__fish_user_data_dir/snippets.fish
 
 bind \ea msm_capture
-bind \ez msm_search_interactive
+bind \ez msm_recall
 ```
 
 ## Usage

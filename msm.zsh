@@ -8,7 +8,7 @@ msm_capture() {
 }
 zle -N msm_capture
 
-msm_search_interactive() {
+msm_recall() {
     local output
 
     output=$(_msm_search) || return 1
@@ -19,4 +19,4 @@ msm_search_interactive() {
     BUFFER="$before$output$after"
     CURSOR=$(( ${#before} + ${#output} ))
 }
-zle -N msm_search_interactive
+zle -N msm_recall

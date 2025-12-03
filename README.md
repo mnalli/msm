@@ -30,11 +30,11 @@ Also, define key bindings for interactive functions:
 ```sh
 # bash
 bind -x '"\ea": msm_capture'
-bind -x '"\ez": msm_search_interactive'
+bind -x '"\ez": msm_recall'
 
 # zsh
 bindkey '^t' msm_capture
-bindkey '^z' msm_search_interactive
+bindkey '^z' msm_recall
 ```
 
 You can customize the behavior of `msm` by defining following variables:
