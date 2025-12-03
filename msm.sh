@@ -1,7 +1,7 @@
 # Minimal Snippet Manager
 
-# Implemented as a POSIX-compliant script
-# Should work on sh, dash, bash, ksh, zsh
+# This script tries to be mostly POSIX-compliant
+# Should work on bash, ksh and zsh
 # Source this file to use it
 
 # Define these variables to change msm behavior
