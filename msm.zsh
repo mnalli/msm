@@ -1,7 +1,5 @@
 msm_capture() {
-    if ! _msm_save "$BUFFER"; then
-        return 1
-    fi
+    _msm_save "$BUFFER" || return 1
 
     BUFFER=''
     CURSOR=0
@@ -9,12 +7,12 @@ msm_capture() {
 zle -N msm_capture
 
 msm_search_interactive() {
-    local output before after
+    local output
 
     output=$(_msm_search) || return 1
 
-    before=${BUFFER[1,CURSOR]}
-    after=${BUFFER[CURSOR+1,-1]}
+    local before=${BUFFER[1,CURSOR]}
+    local after=${BUFFER[CURSOR+1,-1]}
 
     BUFFER="$before$output$after"
     CURSOR=$(( ${#before} + ${#output} ))
