@@ -21,17 +21,20 @@ Source `msm.sh` (POSIX-compliant) and your specific shell script in your `.rc` f
 # bash
 eval "$(cat ~/.msm/msm.{sh,bash})"
 
-# TODO: zsh
+# zsh
+eval "$(cat ~/.msm/msm.{sh,zsh})"
 ```
 
-ALso, define key bindings for interactive functions:
+Also, define key bindings for interactive functions:
 
 ```sh
 # bash
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_search_interactive'
 
-# TODO: zsh
+# zsh
+bindkey '^t' msm_capture
+bindkey '^z' msm_search_interactive
 ```
 
 You can customize the behavior of `msm` by defining following variables:
