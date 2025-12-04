@@ -26,7 +26,7 @@ function msm -a subcommand -a snippet -d 'msm command line interface'
                 _msm_validate_snippet "$snippet"
             end
         case search
-            _msm_search "$snippet"
+            _msm_search
         case help
             echo "$_msm_help"
         case '*'
@@ -40,7 +40,7 @@ function _msm_validate_snippet -a snippet
     set -l definition (echo "%s\n" "$snippet" | sed -n '2,$ p')
 
     if not echo "$description" | grep --quiet "^#"
-        echo "Missing snippet description\n" >&2
+        echo "Missing snippet description" >&2
         echo "$snippet" | nl -w 1 -v 0 -b a -s ": " >&2
         return 1
     end
@@ -60,25 +60,15 @@ function _msm_validate_snippet -a snippet
 end
 
 function _msm_split_snippet_store
-    # replace empty lines with null characters, then split snippets
-    sed 's/^$/\x0/' | sed --null-data -e 's/^\n//' -e 's/\n$//'
+    # split input into paragraph records (group of non‑blank lines),
+    # then print them separated by NUL bytes
+    awk 'BEGIN { RS=""; ORS=" \0" } { print }'
 end
 
-# Validate the whole snippet store file
 function _msm_validate_snippet_store
-    set -l rval 0
-
-    # split store into snippets
-    set -l raw (_msm_split_snippet_store < "$MSM_STORE")
-    set -l snippets (string split \0 -- $raw)
-
-    for snippet in $snippets
-        if not _msm_validate_snippet "$snippet"
-            set rval 1
-        end
+    cat $MSM_STORE | _msm_split_snippet_store | while read --null snippet
+        _msm_validate_snippet "$snippet" || return 1
     end
-
-    return $rval
 end
 
 # TODO: check
@@ -89,16 +79,14 @@ function _msm_save -a snippet
 $snippet"
     end
 
-    if not _msm_validate_snippet "$snippet"
-        return 1
-    end
+    _msm_validate_snippet "$snippet" || return 1
 
     # write in snippet store, adding space at the end
-    printf "%s\n\n" "$snippet" >> "$MSM_STORE"
+    printf "%s\n\n" "$snippet" >> $MSM_STORE[1]
 end
 
 function _msm_search -d 'Search snippets'
-    $MSM_PREVIEW "$MSM_STORE" | _msm_split_snippet_store |
+    $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
         fzf --read0 \
             --ansi \
             --tac \
@@ -106,27 +94,20 @@ function _msm_search -d 'Search snippets'
             --delimiter="\n" \
             --with-nth=2..,1 \
             --preview="echo {} | $MSM_PREVIEW" \
-            --preview-window="bottom:5:wrap" |
+            --preview-window="bottom:5:wrap" \
+            --tabstop=2 |
         sed -n '2,$ p'
 end
 
 function msm_capture -d 'Save current commandline as snippet'
-    set -l line "$(commandline)"
-
-    if not _msm_save "$line"
-        return 1
-    end
-
-    # clear commandline
-    commandline -r ''
+    _msm_save "$(commandline)" || return 1
+    commandline --replace ''
 end
 
-function msm_recall
-    set -l current (commandline)
-    set -l output (_msm_search "$current")
+function msm_recall -d 'Search snippet and insert it in commandline'
+    set -l output (_msm_search)
 
     if test -n "$output"
-        # insert snippet
         commandline --insert "$output"
     end
 end
