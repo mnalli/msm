@@ -38,6 +38,24 @@ View usage tutorial [here](../README.md#usage).
 
 Note: in `fish`, you can add a newline in the command line with `Alt-Enter` by default.
 
+## Using multiple snippet stores
+
+It is possible to configure [multiple snippet stores](../README.md#using-multiple-snippet-stores).
+
+```fish
+set -g MSM_STORE $__fish_user_data_dir/snippets.fish ~/paths.path
+```
+
+Here's how you can easily interact with different stores:
+
+```sh
+# open all stores in vim
+vim $MSM_STORE
+
+# open second store
+vim $MSM_STORE[2]
+```
+
 ## Clear screen from errors
 
 If a snippet validation error occurs during capture, stderr will pollute the
