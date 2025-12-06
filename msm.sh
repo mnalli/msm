@@ -6,7 +6,7 @@
 
 # Define these variables to change msm behavior
 [ -z "$MSM_STORE"   ] && MSM_STORE=~/snippets.sh
-[ -z "$MSM_PREVIEW" ] && MSM_PREVIEW='cat'
+[ -z "$MSM_PREVIEWER" ] && MSM_PREVIEWER='cat'
 
 _msm_help='Usage: msm subcommand [string]
 
@@ -98,14 +98,14 @@ $_msm_save_snippet"
 }
 
 _msm_search() {
-    $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
+    $MSM_PREVIEWER $MSM_STORE | _msm_split_snippet_store |
     fzf --read0 \
         --ansi \
         --tac \
         --prompt="Snippets> " \
         --delimiter="\n" \
         --with-nth=2..,1 \
-        --preview="echo {} | $MSM_PREVIEW" \
+        --preview="echo {} | $MSM_PREVIEWER" \
         --preview-window="bottom:5:wrap" \
         --tabstop=2 |
     sed -n '2,$ p'    # remove description line

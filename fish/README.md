@@ -25,7 +25,7 @@ In your `config.fish`, you can add configuration variables and bindings for
 interactive functions:
 
 ```fish
-set -g MSM_PREVIEW batcat --decorations=never --color=always -l fish
+set -g MSM_PREVIEWER batcat --decorations=never --color=always -l fish
 set -g MSM_STORE $__fish_user_data_dir/snippets.fish
 
 bind \ea msm_capture

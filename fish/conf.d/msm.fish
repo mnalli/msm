@@ -5,7 +5,7 @@
 
 # Define these variables to change msm behavior
 not set -q MSM_STORE   && set -g MSM_STORE ~/snippets.sh
-not set -q MSM_PREVIEW && set -g MSM_PREVIEW cat
+not set -q MSM_PREVIEWER && set -g MSM_PREVIEWER cat
 
 set -l _msm_help 'Usage: msm subcommand [string]
 
@@ -86,14 +86,14 @@ $snippet"
 end
 
 function _msm_search -d 'Search snippets'
-    $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
+    $MSM_PREVIEWER $MSM_STORE | _msm_split_snippet_store |
         fzf --read0 \
             --ansi \
             --tac \
             --prompt="Snippets> " \
             --delimiter="\n" \
             --with-nth=2..,1 \
-            --preview="echo {} | $MSM_PREVIEW" \
+            --preview="echo {} | $MSM_PREVIEWER" \
             --preview-window="bottom:5:wrap" \
             --tabstop=2 |
         sed -n '2,$ p'

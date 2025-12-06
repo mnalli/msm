@@ -68,7 +68,7 @@ You can customize the behavior of `msm` by defining following variables:
 
 ```sh
 # command used to preview snippets (default: cat)
-MSM_PREVIEW='batcat --decorations=never --color=always -l bash'
+MSM_PREVIEWER='batcat --decorations=never --color=always -l bash'
 # location of the snippet store file (default: ~/snippets.sh)
 MSM_STORE=~/.local/share/bash/snippets.sh
 ```
