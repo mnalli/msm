@@ -70,7 +70,7 @@ run `msm validate` to validate the snippet store after you modified it.
     - Can be of multiple lines
     - No empty lines allowed
 
-## CLI
+## Commandline interface
 
 `msm` has a simple command-line interface.
 
