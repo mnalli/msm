@@ -5,6 +5,33 @@ and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
 For `fish`, read [here](fish/README.md).
 
+## Why to use a snippet manager in your shell
+
+To recall complex commands, you could use use the history, using `reverse-i-search`
+or `fzf`, maybe adding a comment to your command, as follows:
+
+```sh
+echo my snippet # searchable description
+```
+
+There are some problems with this approach:
+- The history tends to get really messy after a while
+- The history serves another purpose: to recall *recent* commands
+- This approach forces you to remove size limits on your history
+
+Separating the snippet store from the history, enables you to use the history
+as a transient working memory, and maintain at the same time a curated list
+of snippets.
+
+`msm` gives you more than this:
+- [Multiline snippets](#multiline-snippets)
+- When searching, the selected snippet is [injected in the command line](#snippet-injection)
+  (it does not replace the whole buffer)
+- `fzf` integration: the preview will show the full multiline snippet
+- `bat` integration: syntax highlighted output and preview
+- [Multiple snippet stores](#using-multiple-snippet-stores): they are plain-text
+  files that you can edit with your editor
+
 ## Installation
 
 ```sh
@@ -104,7 +131,7 @@ git rebase -i
 
 ```
 
----
+### Multiline snippets
 
 If you want to be able to specify a description or to add multiline snippets, you
 must be able to **insert newline characters** in your command line. Shells like
@@ -124,7 +151,7 @@ echo this is a
 echo multiline snippet
 ```
 
----
+### Snippet injection
 
 If you recall a snippet, `msm` will insert it under the cursor in your current
 command line. Here are some examples ('_' is the cursor location):
