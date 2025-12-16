@@ -97,14 +97,10 @@ $_msm_save_snippet"
 
 _msm_search() {
     $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
-    fzf --read0 \
-        --ansi \
-        --tac \
-        --prompt="Snippets> " \
-        --delimiter="\n" \
-        --with-nth=2..,1 \
+    fzf --read0 --ansi --tac --tabstop=2   \
+        --delimiter='\n' --with-nth=2..,1  \
         --preview="echo {} | $MSM_PREVIEW" \
-        --preview-window="bottom:5:wrap" \
-        --tabstop=2 |
+        --prompt='msm> ' \
+        --preview-window='bottom:5:wrap' |
     sed -n '2,$ p'    # remove description line
 }
