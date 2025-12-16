@@ -89,9 +89,7 @@ _msm_save() {
 $_msm_save_snippet"
     fi
 
-    if ! _msm_validate_snippet "$_msm_save_snippet"; then
-        return 1
-    fi
+    _msm_validate_snippet "$_msm_save_snippet" || return 1
 
     # append whitelines to snippet definition + write to master store
     printf "%s\n\n" "$_msm_save_snippet" >> ${MSM_STORE%% *}
