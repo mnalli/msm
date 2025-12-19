@@ -101,6 +101,6 @@ _msm_search() {
         --delimiter='\n' --with-nth=2..,1  \
         --preview="echo {} | $MSM_PREVIEW" \
         --prompt='msm> ' \
-        --preview-window='bottom:5:wrap' |
+        --preview-window="$MSM_FZF_PREVIEW_WINDOW" |
     sed -n '2,$ p'    # remove description line
 }
