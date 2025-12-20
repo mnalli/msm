@@ -104,7 +104,7 @@ _msm_search() {
     # reverse order MSM_STORE elements, so that the master store appears last
     # this way, the last captured snippet will be the first result
     $MSM_PREVIEW $(echo $MSM_STORE | tac -s ' ') | _msm_split_snippet_store |
-    fzf --read0 --ansi --tac --tabstop=2   \
+    fzf --read0 --ansi --tac --tabstop=4   \
         --delimiter='\n' --with-nth=2..,1  \
         --preview="echo {} | $MSM_PREVIEW" \
         --prompt='msm> ' \
