@@ -4,6 +4,8 @@
 # Should work on bash, ksh and zsh
 # Source this file to use it
 
+# shellcheck shell=sh
+
 # Define these variables to change msm behavior
 [ -z "$MSM_STORE"   ] && MSM_STORE=~/snippets.sh
 [ -z "$MSM_PREVIEW" ] && MSM_PREVIEW='cat'
@@ -75,7 +77,8 @@ _msm_split_snippet_store() {
 }
 
 _msm_validate_snippet_store() {
-    # read -d is technically not POSIX-compliant... we'll see if it will cause trouble
+    # shellcheck disable=SC2086 # we rely on word-splitting to split MSM_STORE
+    # shellcheck disable=SC3045,3003 # these are not POSIX; we'll see if they cause problems
     cat $MSM_STORE | _msm_split_snippet_store | while read -r -d $'\0' snippet ; do
         _msm_validate_snippet "$snippet" || return 1
     done
@@ -92,10 +95,12 @@ $_msm_save_snippet"
     _msm_validate_snippet "$_msm_save_snippet" || return 1
 
     # append whitelines to snippet definition + write to master store
-    printf "%s\n\n" "$_msm_save_snippet" >> ${MSM_STORE%% *}
+    printf "%s\n\n" "$_msm_save_snippet" >> "${MSM_STORE%% *}"
 }
 
 _msm_search() {
+    # shellcheck disable=SC2046,SC2086 # we rely on word-splitting to split MSM_STORE
+
     # reverse order MSM_STORE elements, so that the master store appears last
     # this way, the last captured snippet will be the first result
     $MSM_PREVIEW $(echo $MSM_STORE | tac -s ' ') | _msm_split_snippet_store |
