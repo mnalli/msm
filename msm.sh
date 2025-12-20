@@ -10,6 +10,10 @@
 [ -z "$MSM_STORE"   ] && MSM_STORE=~/snippets.sh
 [ -z "$MSM_PREVIEW" ] && MSM_PREVIEW='cat'
 
+[ -z "$MSM_FZF_PREVIEW_WINDOW" ] && MSM_FZF_PREVIEW_WINDOW=''
+[ -z "$MSM_FZF_LAYOUT"         ] && MSM_FZF_LAYOUT='default'
+
+
 _msm_help='Usage: msm subcommand [string]
 
     msm help                   Show this message
@@ -107,7 +111,7 @@ _msm_search() {
     fzf --read0 --ansi --tac --tabstop=4   \
         --delimiter='\n' --with-nth=2..,1  \
         --preview="echo {} | $MSM_PREVIEW" \
-        --prompt='msm> ' \
-        --preview-window="$MSM_FZF_PREVIEW_WINDOW" |
+        --prompt='msm> ' --layout="$MSM_FZF_LAYOUT" \
+        --preview-window="$MSM_FZF_PREVIEW_WINDOW"  |
     sed -n '2,$ p'    # remove description line
 }
