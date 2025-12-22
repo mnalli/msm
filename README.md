@@ -73,6 +73,39 @@ MSM_PREVIEW='batcat --decorations=never --color=always -l bash'
 MSM_STORE=~/.local/share/bash/snippets.sh
 ```
 
+### `fzf` UI configuration
+
+You can customize the `fzf` UI using the following variables. The followings
+are their default values:
+
+```sh
+# fzf --preview-window flag
+MSM_FZF_PREVIEW_WINDOW=''
+# fzf --layout flag
+MSM_FZF_LAYOUT='default'
+```
+
+#### Suggested configuration 1
+
+If you rarely use multiline snippet, you could place `fzf` preview window at the
+bottom, using the full horizontal length, and giving 3 lines to it: 1 for the
+description and 2 for the definition.
+
+```sh
+MSM_FZF_PREVIEW_WINDOW='down:3'
+# MSM_FZF_LAYOUT='default'
+```
+
+#### Suggested configuration 2
+
+If you often use multiline snippets, you could use the default preview window
+(right-half of the terminal) and filter the list at the top of the screen.
+
+```sh
+# MSM_FZF_PREVIEW_WINDOW=''
+MSM_FZF_LAYOUT='reverse'
+```
+
 ## Usage
 
 - **Capture**: capture current content of your command line and add it to the snippet store file
