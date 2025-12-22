@@ -55,21 +55,21 @@ _msm_validate_snippet() {
     _msm_validate_snippet_definition="$(echo "$1" | sed -n '2,$ p')"
 
     if ! echo "$_msm_validate_snippet_description" | grep --quiet "^#"; then
-        echo "Missing snippet description" >&2
-        echo "'$1'" | nl -w 1 -v 0 -b a -s ": " >&2
+        echo "Missing snippet description:" >&2
+        echo "$1" >&2
         return 1
     fi
 
     # match description
-    if echo "$_msm_validate_snippet_definition" | grep -n "^#" >&2; then
-        echo "Cannot have comments in definition (description can be one-line only)" >&2
-        echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
+    if echo "$_msm_validate_snippet_definition" | grep --quiet "^#"; then
+        echo "Cannot have comments in definition (description can be one-line only):" >&2
+        echo "$1" >&2
         return 1
     fi
 
-    if echo "$_msm_validate_snippet_definition" | grep -n -E '^[ \t]*$' >&2; then
-        echo "Cannot have empty (or white) lines in definition" >&2
-        echo "$1" | nl -w 1 -v 0 -b a -s ": " >&2
+    if echo "$_msm_validate_snippet_definition" | grep --quiet -E '^[ \t]*$'; then
+        echo "Cannot have empty lines in definition:" >&2
+        echo "$1" >&2
         return 1
     fi
 }
