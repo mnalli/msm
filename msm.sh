@@ -56,20 +56,20 @@ _msm_validate_snippet() {
 
     if ! echo "$_msm_validate_snippet_description" | grep --quiet "^#"; then
         echo "Missing snippet description:" >&2
-        echo "$1" >&2
+        echo "$1" | $MSM_PREVIEW >&2
         return 1
     fi
 
     # match description
     if echo "$_msm_validate_snippet_definition" | grep --quiet "^#"; then
         echo "Cannot have comments in definition (description can be one-line only):" >&2
-        echo "$1" >&2
+        echo "$1" | $MSM_PREVIEW >&2
         return 1
     fi
 
     if echo "$_msm_validate_snippet_definition" | grep --quiet -E '^[ \t]*$'; then
         echo "Cannot have empty lines in definition:" >&2
-        echo "$1" >&2
+        echo "$1" | $MSM_PREVIEW >&2
         return 1
     fi
 }
