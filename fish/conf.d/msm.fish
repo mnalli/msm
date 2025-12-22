@@ -7,6 +7,9 @@
 not set -q MSM_STORE   && set -g MSM_STORE ~/snippets.sh
 not set -q MSM_PREVIEW && set -g MSM_PREVIEW cat
 
+not set -q MSM_FZF_PREVIEW_WINDOW && set -g MSM_FZF_PREVIEW_WINDOW ''
+not set -q MSM_FZF_LAYOUT         && set -g MSM_FZF_LAYOUT default
+
 set -l _msm_help 'Usage: msm subcommand [string]
 
     msm help                   Show this message
@@ -40,21 +43,21 @@ function _msm_validate_snippet -a snippet
     set -l definition (echo "%s\n" "$snippet" | sed -n '2,$ p')
 
     if not echo "$description" | grep --quiet "^#"
-        echo "Missing snippet description" >&2
-        echo "$snippet" | nl -w 1 -v 0 -b a -s ": " >&2
+        echo "Missing snippet description:" >&2
+        echo "$snippet" | $MSM_PREVIEW >&2
         return 1
     end
 
     # match description
-    if echo "$definition" | grep -n "^#" >&2
-        echo "Cannot have comments in definition (description can be one-line only)" >&2
-        echo "$snippet" | nl -w 1 -v 0 -b a -s ": " >&2
+    if echo "$definition" | grep --quiet "^#"
+        echo "Cannot have comments in definition (description can be one-line only):" >&2
+        echo "$snippet" | $MSM_PREVIEW >&2
         return 1
     end
 
-    if echo "$definition" | grep -n -E '^[ \t]*$' >&2
-        echo "Cannot have empty (or white) lines in definition" >&2
-        echo "$snippet" | nl -w 1 -v 0 -b a -s ": " >&2
+    if echo "$definition" | grep --quiet -E '^[ \t]*$'
+        echo "Cannot have empty lines in definition:" >&2
+        echo "$snippet" | $MSM_PREVIEW >&2
         return 1
     end
 end
@@ -71,7 +74,6 @@ function _msm_validate_snippet_store
     end
 end
 
-# TODO: check
 function _msm_save -a snippet
     # If the first line doesn't start with #, prepend a blank description line
     if not printf "%s\n" "$snippet" | sed -n '1p' | grep --quiet '^#'
@@ -86,17 +88,13 @@ $snippet"
 end
 
 function _msm_search -d 'Search snippets'
-    $MSM_PREVIEW $MSM_STORE | _msm_split_snippet_store |
-        fzf --read0 \
-            --ansi \
-            --tac \
-            --prompt="Snippets> " \
-            --delimiter="\n" \
-            --with-nth=2..,1 \
+    $MSM_PREVIEW $MSM_STORE[-1..1] | _msm_split_snippet_store |
+        fzf --read0 --ansi --tac --tabstop=4   \
+            --delimiter="\n" --with-nth=2..,1  \
             --preview="echo {} | $MSM_PREVIEW" \
-            --preview-window="bottom:5:wrap" \
-            --tabstop=2 |
-        sed -n '2,$ p'
+            --prompt="msm> " --layout="$MSM_FZF_LAYOUT" \
+            --preview-window="$MSM_FZF_PREVIEW_WINDOW"  |
+        sed -n '2,$ p'    # remove description line
 end
 
 function msm_capture -d 'Save current commandline as snippet'
