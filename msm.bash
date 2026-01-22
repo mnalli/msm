@@ -9,38 +9,14 @@
 : "${MSM_FZF_PREVIEW_WINDOW:=}"
 : "${MSM_FZF_LAYOUT:=default}"
 
-msm() {
-    local subcommand="$1"
-    local snippet="$2"
+msm_help() {
+    echo 'msm_* functions
 
-    case "$subcommand" in
-        save)
-            _msm_save "$snippet"
-            ;;
-        validate)
-            if [[ -z "$snippet" ]]; then
-                _msm_validate_snippet_store
-            else
-                _msm_validate_snippet "$snippet"
-            fi
-            ;;
-        search)
-            _msm_search
-            ;;
-        help)
-            echo 'Usage: msm subcommand [string]
-
-    msm help                 Show this message
-    msm save "<snippet>"     Save snippet
-    msm validate             Validate snippet store structure
-    msm validate "<snippet>" Validate snippet
-    msm search               Interactively search for snippets'
-            ;;
-        *)
-            echo "Invalid subcommand '$subcommand'" >&2
-            msm help
-            ;;
-    esac
+    msm_help                 Show this message
+    msm_save "<snippet>"     Save snippet
+    msm_validate             Validate snippet store structure
+    msm_validate "<snippet>" Validate snippet
+    msm_search               Interactively search for snippets'
 }
 
 _msm_validate_snippet() {
@@ -84,7 +60,17 @@ _msm_validate_snippet_store() {
     done
 }
 
-_msm_save() {
+msm_validate() {
+    local snippet="$1"
+
+    if [[ -z "$snippet" ]]; then
+        _msm_validate_snippet_store
+    else
+        _msm_validate_snippet "$snippet"
+    fi
+}
+
+msm_save() {
     local snippet="$1"
 
     # ensure snippet starts with a description
@@ -99,7 +85,7 @@ $snippet"
     printf '%s\n\n' "$snippet" >> "${MSM_STORE[0]}"
 }
 
-_msm_search() {
+msm_search() {
     # shellcheck disable=SC2046,SC2086 # we rely on word-splitting to split MSM_STORE
 
     # reverse order MSM_STORE elements, so that the master store appears last
@@ -117,7 +103,7 @@ _msm_search() {
 # functions for interactive usage
 
 msm_capture() {
-    _msm_save "$READLINE_LINE" || return 1
+    msm_save "$READLINE_LINE" || return 1
 
     READLINE_LINE=''
     READLINE_POINT=0
@@ -126,7 +112,7 @@ msm_capture() {
 msm_recall() {
     local output
 
-    output=$(_msm_search) || return 1
+    output=$(msm_search) || return 1
 
     local before="${READLINE_LINE:0:READLINE_POINT}"
     local after="${READLINE_LINE:READLINE_POINT:${#READLINE_LINE}}"

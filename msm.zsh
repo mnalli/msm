@@ -9,38 +9,14 @@
 : "${MSM_FZF_PREVIEW_WINDOW:=}"
 : "${MSM_FZF_LAYOUT:=default}"
 
-msm() {
-    local subcommand="$1"
-    local snippet="$2"
+msm_help() {
+    echo 'msm_* functions
 
-    case "$subcommand" in
-        save)
-            _msm_save "$snippet"
-            ;;
-        validate)
-            if [[ -z "$snippet" ]]; then
-                _msm_validate_snippet_store
-            else
-                _msm_validate_snippet "$snippet"
-            fi
-            ;;
-        search)
-            _msm_search
-            ;;
-        help)
-            echo 'Usage: msm subcommand [string]
-
-    msm help                 Show this message
-    msm save "<snippet>"     Save snippet
-    msm validate             Validate snippet store structure
-    msm validate "<snippet>" Validate snippet
-    msm search               Interactively search for snippets'
-            ;;
-        *)
-            echo "Invalid subcommand '$subcommand'" >&2
-            msm help
-            ;;
-    esac
+    msm_help                 Show this message
+    msm_save "<snippet>"     Save snippet
+    msm_validate             Validate snippet store structure
+    msm_validate "<snippet>" Validate snippet
+    msm_search               Interactively search for snippets'
 }
 
 _msm_validate_snippet() {
@@ -79,13 +55,22 @@ _msm_split_snippet_store() {
 _msm_validate_snippet_store() {
     local snippet
 
-    # shellcheck disable=SC2086 # we rely on word-splitting to split MSM_STORE
     cat $MSM_STORE | _msm_split_snippet_store | while read -r -d '' snippet ; do
         _msm_validate_snippet "$snippet" || return 1
     done
 }
 
-_msm_save() {
+msm_validate() {
+    local snippet="$1"
+
+    if [[ -z "$snippet" ]]; then
+        _msm_validate_snippet_store
+    else
+        _msm_validate_snippet "$snippet"
+    fi
+}
+
+msm_save() {
     local snippet="$1"
 
     # ensure snippet starts with a description
@@ -100,9 +85,7 @@ $snippet"
     printf '%s\n\n' "$snippet" >> $MSM_STORE[1]
 }
 
-_msm_search() {
-    # shellcheck disable=SC2046,SC2086 # we rely on word-splitting to split MSM_STORE
-
+msm_search() {
     # reverse order MSM_STORE elements, so that the master store appears last
     # this way, the last captured snippet will be the first result
     $MSM_PREVIEW $(echo $MSM_STORE | tac -s ' ') | _msm_split_snippet_store |
@@ -118,7 +101,7 @@ _msm_search() {
 # zsh functions for interactive usage
 
 msm_capture() {
-    _msm_save "$BUFFER" || return 1
+    msm_save "$BUFFER" || return 1
 
     BUFFER=''
     CURSOR=0
@@ -128,7 +111,7 @@ zle -N msm_capture
 msm_recall() {
     local output
 
-    output=$(_msm_search) || return 1
+    output=$(msm_search) || return 1
 
     local before=${BUFFER[1,CURSOR]}
     local after=${BUFFER[CURSOR+1,-1]}
