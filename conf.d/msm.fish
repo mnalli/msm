@@ -86,6 +86,9 @@ function msm_search -d 'Search snippets'
         sed -n '2,$ p'    # remove description line
 end
 
+
+# functions for interactive usage
+
 function msm_capture -d 'Save current commandline as snippet'
     msm_save "$(commandline)" || return 1
     commandline --replace ''
