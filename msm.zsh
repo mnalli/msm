@@ -1,4 +1,4 @@
-# Minimal Snippet Manager - zsh-native version
+# Minimal Snippet Manager - zsh implementation
 # Source this file to use it
 
 # Define these variables to change msm behavior

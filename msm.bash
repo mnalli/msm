@@ -1,4 +1,4 @@
-# Minimal Snippet Manager - bash-native version
+# Minimal Snippet Manager - bash implementation
 # Source this file to use it
 
 # Define these variables to change msm behavior

@@ -1,6 +1,4 @@
-# Minimal Snippet Manager
-
-# Implemented as a native fish script
+# Minimal Snippet Manager - fish implementation
 # Source this file to use it
 
 # Define these variables to change msm behavior
