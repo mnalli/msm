@@ -3,11 +3,14 @@
 `msm` enables you to interactively capture command snippets from your terminal
 and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
-For `fish`, read [here](fish/README.md).
+Supported shells:
+- [`bash`](#bash-and-zsh)
+- [`zsh`](#bash-and-zsh)
+- [`fish`](#fish)
 
 ## Why to use a snippet manager in your shell
 
-To recall complex commands, you could use use the history, using `reverse-i-search`
+To recall complex commands, you could use the history, using `reverse-i-search`
 or `fzf`, maybe adding a comment to your command, as follows:
 
 ```sh
@@ -32,7 +35,9 @@ of snippets.
 - [Multiple snippet stores](#using-multiple-snippet-stores): they are plain-text
   files that you can edit with your editor
 
-## Installation
+## `bash` and `zsh`
+
+### Installation
 
 ```sh
 git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
@@ -40,16 +45,16 @@ git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
 
 *Note*: instead of `~/.msm/` you can use the path you prefer.
 
-## Configuration
+### Configuration
 
-Source `msm.sh` and your specific shell bindings in your `.rc` file.
+Source the `msm` source file in your `.rc` file.
 
 ```sh
 # bash
-eval "$(cat ~/.msm/msm.{sh,bash})"
+. ~/.msm/msm.bash
 
 # zsh
-eval "$(cat ~/.msm/msm.{sh,zsh})"
+. ~/.msm/msm.zsh
 ```
 
 Also, define key bindings for interactive functions:
@@ -73,7 +78,37 @@ MSM_PREVIEW='batcat --decorations=never --color=always -l bash'
 MSM_STORE=~/.local/share/bash/snippets.sh
 ```
 
-### `fzf` UI configuration
+## `fish`
+
+### Installation
+
+To install it, you can simply copy [`conf.d/msm.fish`](conf.d/msm.fish) under
+your fish installation `conf.d` directory.
+
+```fish
+curl https://raw.githubusercontent.com/mnalli/msm/refs/heads/main/conf.d/msm.fish -o $__fish_config_dir/conf.d/msm.fish
+```
+
+#### Using [`fisher`](https://github.com/jorgebucaran/fisher)
+
+```fish
+fisher install mnalli/msm
+```
+
+### Configuration
+
+In your `config.fish`, you can add configuration variables and bindings for
+interactive functions:
+
+```fish
+set -g MSM_PREVIEW batcat --decorations=never --color=always -l fish
+set -g MSM_STORE $__fish_user_data_dir/snippets.fish
+
+bind \ea msm_capture
+bind \ez msm_recall
+```
+
+## `fzf` UI configuration
 
 You can customize the `fzf` UI using the following variables. The followings
 are their default values:
@@ -85,7 +120,7 @@ MSM_FZF_PREVIEW_WINDOW=''
 MSM_FZF_LAYOUT='default'
 ```
 
-#### Suggested configuration 1
+### Suggested configuration 1
 
 If you rarely use multiline snippet, you could place `fzf` preview window at the
 bottom, using the full horizontal length, and giving 3 lines to it: 1 for the
@@ -96,7 +131,7 @@ MSM_FZF_PREVIEW_WINDOW='down:3'
 # MSM_FZF_LAYOUT='default'
 ```
 
-#### Suggested configuration 2
+### Suggested configuration 2
 
 If you often use multiline snippets, you could use the default preview window
 (right-half of the terminal) and filter the list at the top of the screen.
@@ -118,7 +153,7 @@ vim $MSM_STORE
 ```
 
 Always leave one or more empty lines between one snippet and the other. You can
-run `msm validate` to validate the snippet store after you modified it.
+run `msm_validate` to validate the snippet store after you modified it.
 
 ## Snippet format
 
@@ -130,16 +165,16 @@ run `msm validate` to validate the snippet store after you modified it.
     - Can be of multiple lines
     - No empty lines allowed
 
-## Commandline interface
+## `msm_*` functions
 
-`msm` has a simple command-line interface.
+`msm` provides some public functions:
 
 ```sh
-# view all subcommands
-msm help
+# view all functions
+msm_help
 
 # validate snippet store (useful if you modified the file manually)
-msm validate
+msm_validate
 ```
 
 ## Tutorial
@@ -161,7 +196,6 @@ an empty description (added by default):
 ```sh
 #
 git rebase -i
-
 ```
 
 ### Multiline snippets
@@ -199,11 +233,13 @@ ls _
 
 ## Using multiple snippet stores
 
-It is possible to configure multiple snippet stores.
-
+It is possible to configure multiple snippet stores, using arrays:
 ```sh
-# use echo subcommand to expand `~`
-MSM_STORE=$(echo ~/snippets.sh ~/system.path)
+# bash and zsh
+MSM_STORE=(~/snippets.sh ~/system.path)
+
+# fish
+set -g MSM_STORE ~/snippets.sh ~/system.path
 ```
 
 - During search, `msm` will filter results from all the stores.
@@ -211,12 +247,38 @@ MSM_STORE=$(echo ~/snippets.sh ~/system.path)
   is the first one in the list, i.e. `~/snippets.sh`. If you wish to move it to
   another store, you can do it manually.
 
-Here's how you can easily interact with different stores:
+Here's how you can interact with different stores:
 
-```sh
+### `bash`
+
+```bash
+# open all stores in vim
+vim ${MSM_STORE[@]}
+
+# open first (master) store
+vim ${MSM_STORE[0]}
+vim $MSM_STORE        # also valid
+
+# open second store
+vim ${MSM_STORE[1]}
+```
+
+### `zsh`
+
+```zsh
 # open all stores in vim
 vim $MSM_STORE
 
 # open second store
-vim $(echo $MSM_STORE | cut -d ' ' -f2)
+vim $MSM_STORE[1]
+```
+
+### `fish`
+
+```fish
+# open all stores in vim
+vim $MSM_STORE
+
+# open second store
+vim $MSM_STORE[2]
 ```
