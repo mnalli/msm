@@ -97,7 +97,7 @@ $snippet"
     _msm_validate_snippet "$snippet" || return 1
 
     # append whitelines to snippet definition and write to master store
-    printf '%s\n\n' "$snippet" >> "${MSM_STORE%% *}"
+    printf '%s\n\n' "$snippet" >> $MSM_STORE[1]
 }
 
 _msm_search() {

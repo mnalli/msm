@@ -79,8 +79,7 @@ _msm_split_snippet_store() {
 _msm_validate_snippet_store() {
     local snippet
 
-    # shellcheck disable=SC2086 # we rely on word-splitting to split MSM_STORE
-    cat $MSM_STORE | _msm_split_snippet_store | while read -r -d '' snippet ; do
+    cat "${MSM_STORE[@]}" | _msm_split_snippet_store | while read -r -d '' snippet ; do
         _msm_validate_snippet "$snippet" || return 1
     done
 }
@@ -97,7 +96,7 @@ $snippet"
     _msm_validate_snippet "$snippet" || return 1
 
     # append whitelines to snippet definition and write to master store
-    printf '%s\n\n' "$snippet" >> "${MSM_STORE%% *}"
+    printf '%s\n\n' "$snippet" >> "${MSM_STORE[0]}"
 }
 
 _msm_search() {
@@ -105,7 +104,7 @@ _msm_search() {
 
     # reverse order MSM_STORE elements, so that the master store appears last
     # this way, the last captured snippet will be the first result
-    $MSM_PREVIEW $(echo $MSM_STORE | tac -s ' ') | _msm_split_snippet_store |
+    $MSM_PREVIEW $(echo "${MSM_STORE[@]}" | tac -s ' ') | _msm_split_snippet_store |
     fzf --read0 --ansi --tac --tabstop=4   \
         --delimiter='\n' --with-nth=2..,1  \
         --preview="echo {} | $MSM_PREVIEW" \
