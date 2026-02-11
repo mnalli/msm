@@ -269,8 +269,11 @@ vim ${MSM_STORE[1]}
 # open all stores in vim
 vim $MSM_STORE
 
-# open second store
+# open first (master) store
 vim $MSM_STORE[1]
+
+# open second store
+vim $MSM_STORE[2]
 ```
 
 ### `fish`
@@ -278,6 +281,9 @@ vim $MSM_STORE[1]
 ```fish
 # open all stores in vim
 vim $MSM_STORE
+
+# open first (master) store
+vim $MSM_STORE[1]
 
 # open second store
 vim $MSM_STORE[2]
