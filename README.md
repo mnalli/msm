@@ -65,7 +65,7 @@ You can customize the behavior of `msm` by defining following variables:
 
 ```sh
 # command used to preview snippets (default: cat)
-MSM_PREVIEW='bat --decorations=never --color=always -l bash'
+MSM_PREVIEW='bat --decorations=never --color=always --paging=never -l bash'
 # location of the snippet store file (default: ~/snippets.sh)
 MSM_STORE=~/.local/share/bash/snippets.sh
 ```
@@ -100,7 +100,7 @@ You can customize the behavior of `msm` by defining following variables:
 
 ```sh
 # command used to preview snippets (default: cat)
-MSM_PREVIEW=(bat --decorations=never --color=always -l zsh)
+MSM_PREVIEW=(bat --decorations=never --color=always --paging=never -l zsh)
 # location of the snippet store file (default: ~/snippets.sh)
 MSM_STORE=(~/.local/share/zsh/snippets.sh)
 ```
@@ -128,7 +128,7 @@ In your `config.fish`, you can add configuration variables and bindings for
 interactive functions:
 
 ```fish
-set -g MSM_PREVIEW bat --decorations=never --color=always -l fish
+set -g MSM_PREVIEW bat --decorations=never --color=always --paging=never -l fish
 set -g MSM_STORE $__fish_user_data_dir/snippets.fish
 
 # suggested bindings: Alt-c, Alt-r
