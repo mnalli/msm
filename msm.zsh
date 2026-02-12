@@ -2,7 +2,7 @@
 # Source this file to use it
 
 # Define these variables to change msm behavior
-: "${MSM_STORE:=$HOME/snippets.sh}"
+[ -v MSM_STORE ] || MSM_STORE=(~/snippets.sh)   # set 1-element array as default
 : "${MSM_PREVIEW:=cat}"
 
 # fzf config
