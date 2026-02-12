@@ -8,6 +8,8 @@ Supported shells:
 - [`zsh`](#zsh)
 - [`fish`](#fish)
 
+![Usage example](assets/usage.gif)
+
 ## Why to use a snippet manager in your shell
 
 To recall complex commands, you could use the history, using `reverse-i-search`
