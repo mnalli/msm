@@ -4,8 +4,8 @@
 and recall them using [`fzf`](https://github.com/junegunn/fzf).
 
 Supported shells:
-- [`bash`](#bash-and-zsh)
-- [`zsh`](#bash-and-zsh)
+- [`bash`](#bash)
+- [`zsh`](#zsh)
 - [`fish`](#fish)
 
 ## Why to use a snippet manager in your shell
@@ -35,7 +35,7 @@ of snippets.
 - [Multiple snippet stores](#using-multiple-snippet-stores): they are plain-text
   files that you can edit with your editor
 
-## `bash` and `zsh`
+## `bash`
 
 ### Installation
 
@@ -43,30 +43,22 @@ of snippets.
 git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
 ```
 
-*Note*: instead of `~/.msm/` you can use the path you prefer.
+*Note*: instead of `~/.msm/`, you can use the path you prefer.
 
 ### Configuration
 
-Source the `msm` source file in your `.rc` file.
+Source the `msm` source file in your `.bashrc` file.
 
-```sh
-# bash
+```bash
 . ~/.msm/msm.bash
-
-# zsh
-. ~/.msm/msm.zsh
 ```
 
 Also, define key bindings for interactive functions:
 
-```sh
-# bash - suggested bindings: Alt-a, Alt-z
+```bash
+# suggested bindings: Alt-a, Alt-z
 bind -x '"\ea": msm_capture'
 bind -x '"\ez": msm_recall'
-
-# zsh - suggested bindings: Ctrl-t, Ctrl-z
-bindkey '^t' msm_capture
-bindkey '^z' msm_recall
 ```
 
 You can customize the behavior of `msm` by defining following variables:
@@ -76,6 +68,41 @@ You can customize the behavior of `msm` by defining following variables:
 MSM_PREVIEW='bat --decorations=never --color=always -l bash'
 # location of the snippet store file (default: ~/snippets.sh)
 MSM_STORE=~/.local/share/bash/snippets.sh
+```
+
+## `zsh`
+
+### Installation
+
+```sh
+git clone https://github.com/mnalli/msm.git --depth=1 ~/.msm
+```
+
+*Note*: instead of `~/.msm/`, you can use the path you prefer.
+
+### Configuration
+
+Source the `msm` source file in your `.zshrc` file.
+
+```zsh
+. ~/.msm/msm.zsh
+```
+
+Also, define key bindings for interactive functions:
+
+```zsh
+# suggested bindings: Ctrl-t, Ctrl-z
+bindkey '^t' msm_capture
+bindkey '^z' msm_recall
+```
+
+You can customize the behavior of `msm` by defining following variables:
+
+```sh
+# command used to preview snippets (default: cat)
+MSM_PREVIEW=(bat --decorations=never --color=always -l zsh)
+# location of the snippet store file (default: ~/snippets.sh)
+MSM_STORE=(~/.local/share/zsh/snippets.sh)
 ```
 
 ## `fish`
