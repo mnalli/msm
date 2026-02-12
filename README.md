@@ -56,9 +56,9 @@ Source the `msm` source file in your `.bashrc` file.
 Also, define key bindings for interactive functions:
 
 ```bash
-# suggested bindings: Alt-a, Alt-z
-bind -x '"\ea": msm_capture'
-bind -x '"\ez": msm_recall'
+# suggested bindings: Alt-c, Alt-r
+bind -x '"\ec": msm_capture'
+bind -x '"\er": msm_recall'
 ```
 
 You can customize the behavior of `msm` by defining following variables:
@@ -91,9 +91,9 @@ Source the `msm` source file in your `.zshrc` file.
 Also, define key bindings for interactive functions:
 
 ```zsh
-# suggested bindings: Ctrl-t, Ctrl-z
-bindkey '^t' msm_capture
-bindkey '^z' msm_recall
+# suggested bindings: Alt-c, Alt-r
+bindkey '\ec' msm_capture
+bindkey '\er' msm_recall
 ```
 
 You can customize the behavior of `msm` by defining following variables:
@@ -131,8 +131,9 @@ interactive functions:
 set -g MSM_PREVIEW bat --decorations=never --color=always -l fish
 set -g MSM_STORE $__fish_user_data_dir/snippets.fish
 
-bind \ea msm_capture
-bind \ez msm_recall
+# suggested bindings: Alt-c, Alt-r
+bind \ec msm_capture
+bind \er msm_recall
 ```
 
 ## `fzf` UI configuration
