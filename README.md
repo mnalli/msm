@@ -211,7 +211,8 @@ msm_validate
 
 ![Usage example](assets/usage.gif)
 
-Write the snippet in your command line and then use `Alt-a` to **add** the snippet to the store.
+Write the snippet in your command line and then use `Alt-c` to **capture** the
+snippet into the store.
 
 For example, type the following:
 
@@ -219,8 +220,8 @@ For example, type the following:
 git rebase -i
 ```
 
-Now, press `Alt-a`. The command-line should disappear and if you open the
-snippet store at `$MSM_STORE` you should see the newly stored snippet, after
+Now, press `Alt-c`. The command-line should disappear and, if you open the
+snippet store at `$MSM_STORE`, you should see the newly stored snippet, after
 an empty description (added by default):
 
 ```sh
@@ -264,6 +265,7 @@ ls _
 ## Using multiple snippet stores
 
 It is possible to configure multiple snippet stores, using arrays:
+
 ```sh
 # bash and zsh
 MSM_STORE=(~/snippets.sh ~/system.path)
